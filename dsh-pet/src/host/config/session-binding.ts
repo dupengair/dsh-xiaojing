@@ -5,9 +5,10 @@
  * 合并层不透传——读取直接走用户层原对象，保存设置时由 saveUserConfig 的透传保留兜住）。
  * @module dsh-pet/src/host/config/session-binding
  */
-import { mkdirSync, writeFileSync } from 'node:fs';
+import { existsSync, mkdirSync, readFileSync, writeFileSync } from 'node:fs';
 import { dirname } from 'node:path';
-import { readUserConfig } from './jsonc.ts';
+import { effectiveUserFile, readUserConfig } from './jsonc.ts';
+import { setJsoncTopLevelValue } from './jsonc-edit.ts';
 import type { ConfigPaths } from './constants.ts';
 
 /** 绑定关系：sessionId 为空串 = 未绑定（enabled 必为 false）。 */
@@ -35,13 +36,20 @@ export function readSessionBinding(paths: ConfigPaths): SessionBinding | null {
 }
 
 /**
- * 写绑定：读用户层原对象 → 只替换 `sessionBinding` 一个键 → 整份写回主配置文件。
- * 已知取舍：JSON.stringify 会丢掉用户在 jsonc 里手写的注释（只在面板改绑定时发生一次）；
- * 其余字段原样带回，不碰设置页的白名单字段。
+ * 写绑定：只替换用户主配置里 `sessionBinding` 那一段字符。
+ *
+ * 走 JSONC 定点改写（src/host/config/jsonc-edit.ts）：用户手写的 `//` 注释、缩进、键顺序都留得住。
+ * 文件不存在 → 按普通 JSON 新建一份；文件存在但改不动（结构可疑 / 校验不通过）
+ * → 抛错、不写盘，让上层的请求失败而不是悄悄把用户配置抹平。
  */
 export function writeSessionBinding(paths: ConfigPaths, binding: SessionBinding): void {
-  const user = readUserConfig(paths) ?? {};
-  const next = { ...user, sessionBinding: binding };
-  mkdirSync(dirname(paths.userFile), { recursive: true });
-  writeFileSync(paths.userFile, JSON.stringify(next, null, 2) + '\n', 'utf8');
+  const file = effectiveUserFile(paths) ?? paths.userFile;
+  const raw = existsSync(file) ? readFileSync(file, 'utf8') : undefined;
+  mkdirSync(dirname(file), { recursive: true });
+  if (raw === undefined || raw.trim() === '') {
+    // 还没有用户层文件：写一份只有绑定字段的最小结构（之后合并层会补默认值）
+    writeFileSync(file, JSON.stringify({ sessionBinding: binding }, null, 2) + '\n', 'utf8');
+    return;
+  }
+  writeFileSync(file, setJsoncTopLevelValue(raw, 'sessionBinding', binding), 'utf8');
 }

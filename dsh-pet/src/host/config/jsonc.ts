@@ -9,7 +9,7 @@ import { existsSync, readFileSync } from 'node:fs';
 import type { ConfigPaths } from './constants.ts';
 
 /** 仅删除字符串之外的 JSONC 注释，保留字符串转义、换行与相邻 JSON token 的分隔。 */
-function stripJsonc(src: string): string {
+export function stripJsonc(src: string): string {
   let out = '';
   let inString = false;
   for (let i = 0; i < src.length; i++) {
