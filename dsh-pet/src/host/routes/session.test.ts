@@ -1,11 +1,14 @@
 /**
- * 会话跳转端点（`POST /focus-session`）：出入参分档与叶子写入。
+ * 会话跳转端点（`POST /focus-session`）与会话列表端点（`GET /session-binding/sessions`）：出入参分档与写入。
  *
- * 只测端点自己的判断和写入结果；页面怎么消费这条信号不在本文件范围。
+ * 只测端点自己的判断和结果；页面怎么消费信号、Helper 怎么分组不在本文件范围。
  * 跑法：node --experimental-strip-types --test src/host/routes/session.test.ts
  */
 import { describe, test } from 'node:test';
 import assert from 'node:assert/strict';
+import { mkdtempSync, rmSync, writeFileSync } from 'node:fs';
+import { tmpdir } from 'node:os';
+import { join } from 'node:path';
 
 import { handleSessionRoutes } from './session.ts';
 import { PollStateStore } from '../state.ts';
@@ -16,6 +19,21 @@ import type { PetRouteDeps } from './types.ts';
 function makeDeps(): { deps: PetRouteDeps; state: PollStateStore } {
   const state = new PollStateStore();
   return { deps: { state } as unknown as PetRouteDeps, state };
+}
+
+/** 会话列表端点的依赖：真 configPaths（临时目录）+ 可注入的 optionalService 假实现。 */
+function makeListDeps(services: Record<string, unknown>): { deps: PetRouteDeps; dir: string } {
+  const dir = mkdtempSync(join(tmpdir(), 'dsh-pet-session-test-'));
+  const deps = {
+    state: new PollStateStore(),
+    configPaths: {
+      defaultFile: join(dir, 'default.jsonc'),
+      userFile: join(dir, 'main-config.jsonc'),
+      petDir: join(dir, 'pet'),
+    },
+    optionalService: (name: string) => services[name],
+  } as unknown as PetRouteDeps;
+  return { deps, dir };
 }
 
 /** 调一次端点；`rest` 默认是干净的 `focus-session`。 */
@@ -110,5 +128,128 @@ describe('handleSessionRoutes —— 写 sections.focusSession', () => {
     const second = state.read().sections.focusSession.data as { sessionId: string; ts: number };
     assert.equal(second.sessionId, 'session-two');
     assert.ok(second.ts >= first.ts, 'ts 用于消费端判重，不允许回退');
+  });
+});
+
+describe('handleSessionRoutes —— GET session-binding/sessions', () => {
+  test('非 GET → 405', async () => {
+    const { deps } = makeListDeps({ sessionQuery: { listSessions: async () => [] } });
+    const { status, obj } = asJson(await call(deps, 'POST', '{}', 'session-binding/sessions'));
+    assert.equal(status, 405);
+    assert.equal(obj.reason, 'method-not-allowed');
+  });
+
+  test('缺 sessionQuery 服务 → 200 available:false 空列表（Helper 隐藏菜单项）', async () => {
+    const { deps } = makeListDeps({});
+    const { status, obj } = asJson(await call(deps, 'GET', undefined, 'session-binding/sessions'));
+    assert.equal(status, 200);
+    assert.equal(obj.ok, true);
+    assert.equal(obj.available, false);
+    assert.deepEqual(obj.sessions, []);
+    assert.equal(obj.workspaces, null);
+    assert.deepEqual(obj.sessionBinding, { sessionId: '', enabled: false });
+  });
+
+  test('listSessions 抛错 → available:false 不 5xx', async () => {
+    const { deps } = makeListDeps({
+      sessionQuery: {
+        listSessions: async () => {
+          throw new Error('boom');
+        },
+      },
+    });
+    const { status, obj } = asJson(await call(deps, 'GET', undefined, 'session-binding/sessions'));
+    assert.equal(status, 200);
+    assert.equal(obj.available, false);
+  });
+
+  test('正常路径：header 投影 + 标题批量 + 工作区投影 + 回读绑定', async () => {
+    const dir = join(mkdtempSync(join(tmpdir(), 'dsh-pet-session-test-')), '');
+    const { deps } = makeListDeps({
+      sessionQuery: {
+        listSessions: async () => [
+          { header: { id: 'session-aaa', createdAt: 200, cwd: 'D:\\work\\a', parentSession: null, origin: undefined } },
+          { header: { id: 'session-bbb', createdAt: 100, cwd: undefined } }, // 无 cwd：行仍列出（分组交给消费端）
+          null, // 脏行：非对象 record
+          { header: { id: '', createdAt: 1 } }, // 脏行：id 空串
+          { header: { id: 42 } }, // 脏行：id 非字符串
+        ],
+        readTitleSnapshots: async () => [
+          { status: 'fulfilled', value: { session: { id: 'session-aaa' }, title: '标题 A' } },
+          { status: 'fulfilled', value: { session: { id: 'session-bbb' }, title: '   ' } }, // 纯空白标题 → 留空
+        ],
+      },
+      workspaceRegistry: {
+        list: () => [{ id: 'ws1', title: '工作区一', path: 'D:\\work\\a', sessionIds: ['session-aaa'] }],
+        archivedSessionIds: ['session-zzz', 7],
+      },
+    });
+    // 预置绑定：验证 GET 一起带回
+    writeFileSync(
+      (deps.configPaths as { userFile: string }).userFile,
+      JSON.stringify({ sessionBinding: { sessionId: 'session-aaa', enabled: true } }),
+      'utf8',
+    );
+    const { status, obj } = asJson(await call(deps, 'GET', undefined, 'session-binding/sessions'));
+    assert.equal(status, 200);
+    assert.equal(obj.available, true);
+    assert.deepEqual(obj.sessions, [
+      {
+        id: 'session-aaa',
+        title: '标题 A',
+        cwd: 'D:\\work\\a',
+        updatedAt: 200,
+        parentSessionId: undefined,
+        origin: undefined,
+      },
+      { id: 'session-bbb', title: '', cwd: undefined, updatedAt: 100, parentSessionId: undefined, origin: undefined },
+    ]);
+    assert.deepEqual(obj.workspaces, {
+      items: [{ workspaceId: 'ws1', path: 'D:\\work\\a', title: '工作区一', sessionIds: ['session-aaa'] }],
+      archivedSessionIds: ['session-zzz'],
+    });
+    assert.deepEqual(obj.sessionBinding, { sessionId: 'session-aaa', enabled: true });
+    rmSync(dir, { recursive: true, force: true });
+  });
+
+  test('缺 readTitleSnapshots / 标题抛错 → 标题留空，不失败', async () => {
+    const { deps } = makeListDeps({
+      sessionQuery: {
+        listSessions: async () => [{ header: { id: 'session-ccc', createdAt: 5 } }],
+        // readTitleSnapshots 缺失：走不到标题分支
+      },
+    });
+    const { obj } = asJson(await call(deps, 'GET', undefined, 'session-binding/sessions'));
+    assert.equal(obj.available, true);
+    assert.deepEqual(obj.sessions, [
+      { id: 'session-ccc', title: '', cwd: undefined, updatedAt: 5, parentSessionId: undefined, origin: undefined },
+    ]);
+  });
+
+  test('workspaceRegistry 抛错 → workspaces:null（消费端走 cwd 启发式）', async () => {
+    const { deps } = makeListDeps({
+      sessionQuery: { listSessions: async () => [{ header: { id: 'session-x' } }] },
+      workspaceRegistry: {
+        list: () => {
+          throw new Error('boom');
+        },
+        archivedSessionIds: [],
+      },
+    });
+    const { obj } = asJson(await call(deps, 'GET', undefined, 'session-binding/sessions'));
+    assert.equal(obj.available, true);
+    assert.equal(obj.workspaces, null);
+  });
+
+  test('deps 没有 optionalService 字段 → 不抛，按缺服务降级', async () => {
+    const dir = mkdtempSync(join(tmpdir(), 'dsh-pet-session-test-'));
+    const deps = {
+      state: new PollStateStore(),
+      configPaths: { userFile: join(dir, 'x.jsonc') },
+    } as unknown as PetRouteDeps;
+    const { status, obj } = asJson(await call(deps, 'GET', undefined, 'session-binding/sessions'));
+    assert.equal(status, 200);
+    assert.equal(obj.available, false);
+    rmSync(dir, { recursive: true, force: true });
   });
 });

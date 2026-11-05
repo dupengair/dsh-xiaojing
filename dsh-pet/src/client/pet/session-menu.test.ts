@@ -9,6 +9,7 @@ import assert from 'node:assert/strict';
 
 import {
   MAX_SESSION_ITEMS,
+  UNBIND_LABEL,
   buildSessionMenu,
   groupSessionsByWorkspace,
   sessionOptionsFromSnapshot,
@@ -296,5 +297,23 @@ describe('groupSessionsByWorkspace —— 全工作区分组', () => {
       [],
     );
     assert.equal(buildSessionMenu(rows, '', { items: [], archivedSessionIds: ['a'] }), null);
+  });
+});
+
+describe('sessionTitle / 叶子 sessionId —— 标题兜底与点击分发', () => {
+  test('空标题回落：去掉 session- 前缀后取前 8 位', () => {
+    assert.equal(sessionTitle({ id: 'session-8d503494-392a-4329-9df3-4ca466331cb3' }), '8d503494');
+    assert.equal(sessionTitle({ id: 'session-11b7077b-9c5a-4f53-9fa7-ce981255043d' }), '11b7077b');
+    assert.equal(sessionTitle({ id: 'ab12cd34', title: '   ' }), 'ab12cd34');
+    assert.equal(sessionTitle({ id: 'session-abc', title: '插件开发' }), '插件开发');
+  });
+
+  test('叶子带 sessionId：点击分发不依赖对象身份', () => {
+    const menu = buildSessionMenu([{ id: 's1', title: '插件开发', cwd: 'D:/w' }], '');
+    assert.ok(menu !== null);
+    const sessionLeaf = menu.branch.children.find((child) => child.label === '插件开发');
+    assert.equal(sessionLeaf?.sessionId, 's1');
+    const unbindLeaf = menu.branch.children.find((child) => child.label === UNBIND_LABEL);
+    assert.equal(unbindLeaf?.sessionId, '');
   });
 });

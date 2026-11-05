@@ -18,6 +18,7 @@ export * from './config.ts';
 export * from './fonts.ts';
 export * from './notify.ts';
 export * from './menu.ts';
+export * from './session-list.ts';
 export * from './chat/index.ts';
 export * from './physics.ts';
 export * from './score.ts';

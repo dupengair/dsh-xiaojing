@@ -317,6 +317,74 @@ paths:
         "405":
           $ref: "#/components/responses/MethodNotAllowed"
 
+  /dsh-pet-7340/session-binding:
+    get:
+      tags: [Config]
+      operationId: getSessionBinding
+      summary: 读当前会话绑定
+      description: |
+        读用户层 `main-config.jsonc` 顶层的 `sessionBinding`（`{ sessionId, enabled }`）。
+        网页端与桌面 Helper 的宠物聊天共用这一条绑定：绑定到某会话后，`/chat` 的读写落在该会话。
+        还没写过绑定时返回 `{ sessionId: "", enabled: false }`。
+      responses:
+        "200":
+          description: 当前绑定。
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/SessionBindingResponse"
+    post:
+      tags: [Config]
+      operationId: saveSessionBinding
+      summary: 写会话绑定
+      description: |
+        写用户层 `main-config.jsonc` 顶层的 `sessionBinding`。`sessionId` `trim()` 后
+        不得为空、不得是哨兵值 `unknown`、上限 128 字符；不满足时 `ok: false` + `reason: bad-request`。
+        解绑也是走这里：传 `sessionId: ""` + `enabled: false`（由消费端拼装）。
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/SessionBindingInput"
+      responses:
+        "200":
+          description: 已写入（回写后的绑定原样返回）。
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/SessionBindingResponse"
+        "400":
+          description: "请求体不是合法 JSON（`reason: invalid-json`）或校验失败（`reason: bad-request`）。"
+        "405":
+          $ref: "#/components/responses/MethodNotAllowed"
+
+  /dsh-pet-7340/session-binding/sessions:
+    get:
+      tags: [State]
+      operationId: listSessionBindingSessions
+      summary: 给桌面 Helper 列可绑定的 DSH 会话
+      description: |
+        桌面 Helper 是独立 Electron 窗口，拿不到 DSH 客户端容器里的 sessions / workspaces
+        服务；本端点由宿主代为枚举：`sessionQuery`（dsh-session-query）出会话头与标题，
+        `workspaceRegistry`（dsh-workspace）出分组与归档名单，绑定一并带回（打开菜单一次
+        GET 拿全）。行形状与过滤规则同网页端（共用 shared/session-list）。
+
+        - `available: false`：宿主缺 `sessionQuery` 或调用失败（会话枚举不了），
+          此时 `sessions` 为空、`workspaces` 为 null，Helper 隐藏「DSH 会话」菜单项。
+        - `workspaces: null`：`workspaceRegistry` 缺失/失败，消费端按 `cwd` 启发式分组。
+        - 已知取舍：宿主侧拿不到 `blank` / `retainedBy`（客户端概念），未命名占位会话
+          不会被过滤，空标题由消费端回落为 id 前 8 位显示；`updatedAt` 用 `createdAt` 近似。
+      responses:
+        "200":
+          description: 会话列表与当前绑定。
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/SessionListResponse"
+        "405":
+          $ref: "#/components/responses/MethodNotAllowed"
+
   /dsh-pet-7340/focus-session:
     post:
       tags: [Action]
@@ -3202,6 +3270,127 @@ components:
           type: boolean
           const: true
       description: 动作已完成。数据请从 `GET /state` 读取。
+
+    SessionBindingView:
+      type: object
+      required: [sessionId, enabled]
+      properties:
+        sessionId:
+          type: string
+          description: 绑定的会话 id；空串 = 未绑定。
+        enabled:
+          type: boolean
+          description: 绑定开关（sessionId 非空时才有意义）。
+      description: 用户层 main-config.jsonc 顶层的 sessionBinding 原样。
+
+    SessionBindingInput:
+      type: object
+      required: [sessionId, enabled]
+      properties:
+        sessionId:
+          type: string
+          description: |
+            目标会话 id。`trim()` 后不得为空、不得是哨兵值 `unknown`、上限 128 字符；
+            不满足时 `ok: false` + `reason: bad-request`。
+          example: session-742cf7de-d1ce-4694-bfde-77158ce9e0ca
+        enabled:
+          type: boolean
+          description: 绑定开关。
+
+    SessionBindingResponse:
+      type: object
+      required: [ok, sessionBinding]
+      properties:
+        ok:
+          type: boolean
+          const: true
+        sessionBinding:
+          $ref: "#/components/schemas/SessionBindingView"
+      description: 当前（GET）或写入后（POST）的会话绑定。
+
+    SessionRow:
+      type: object
+      required: [id, title]
+      properties:
+        id:
+          type: string
+          description: 会话 id。
+        title:
+          type: string
+          description: 折叠出的标题；空串由消费端回落为 id 前 8 位显示。
+        cwd:
+          type: string
+          description: 会话工作目录（冷会话都有；用于无工作区服务时的启发式分组）。
+        updatedAt:
+          type: integer
+          description: 最近活跃时间近似值（毫秒；宿主侧用 createdAt）。
+        parentSessionId:
+          type: string
+          description: 非空 = 子代理/派生会话，消费端过滤不列。
+        origin:
+          type: string
+          description: 官方 origin 标记（如 `subagent`），消费端过滤不列。
+      description: 一条可绑定会话的投影（shared/session-list 的 SessionRow）。
+
+    WorkspaceRow:
+      type: object
+      required: [workspaceId, title, sessionIds]
+      properties:
+        workspaceId:
+          type: string
+          description: 工作区身份键。
+        path:
+          type: string
+          description: 工作区目录绝对路径；空标题时分组名回落到其末段。
+        title:
+          type: string
+          description: 用户改过的显示名；空或 `default-workspace` 时消费端回落。
+        sessionIds:
+          type: array
+          items:
+            type: string
+          description: 记账在该工作区下的会话 id（权威归属）。
+      description: 一个工作区的投影（shared/session-list 的 WorkspaceRow）。
+
+    SessionListResponse:
+      type: object
+      required: [ok, available, sessions, workspaces, sessionBinding]
+      properties:
+        ok:
+          type: boolean
+          const: true
+        available:
+          type: boolean
+          description: false = 宿主枚举不了会话（缺 sessionQuery 或调用失败），sessions 为空。
+        sessions:
+          type: array
+          items:
+            $ref: "#/components/schemas/SessionRow"
+          description: 全部会话行（未过滤，分组与可见性过滤由消费端用同一份 shared/session-list 做）。
+        workspaces:
+          oneOf:
+            - $ref: "#/components/schemas/WorkspaceSnapshot"
+            - type: "null"
+          description: 工作区投影；null = 不可用（消费端按 cwd 启发式分组）。
+        sessionBinding:
+          $ref: "#/components/schemas/SessionBindingView"
+      description: 会话列表 + 当前绑定，供桌面 Helper 一次 GET 组装「DSH 会话」子菜单。
+
+    WorkspaceSnapshot:
+      type: object
+      required: [items, archivedSessionIds]
+      properties:
+        items:
+          type: array
+          items:
+            $ref: "#/components/schemas/WorkspaceRow"
+          description: 工作区列表（顺序即官方显示顺序）。
+        archivedSessionIds:
+          type: array
+          items:
+            type: string
+          description: 全局归档会话 id；在里面的会话菜单里不列。
+      description: 工作区投影（shared/session-list 的 WorkspaceSnapshotLike）。
 
     FocusSessionResponse:
       type: object

@@ -40,6 +40,9 @@ export interface MenuLeaf {
   image?: string;
   /** 该项左侧的缩略图地址（完整 URL，已编码）。缺省 = 只有文字，不占位。 */
   thumb?: string;
+  /** 「DSH 会话」列表项绑定的会话 id（空串 = 解绑）。挂在叶子上，点击时按它分发，
+   *  不依赖叶子对象身份——菜单树被重建（缓存刷新）后已渲染的旧叶子仍然点得动。 */
+  sessionId?: string;
 }
 
 /** 分支：带子菜单的项。 */

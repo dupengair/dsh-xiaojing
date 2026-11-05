@@ -20,9 +20,50 @@ Object.assign(PetSprite.prototype, {
     e.preventDefault();
     this.stopThrow(); // 菜单弹出前停住飞行中的宠物
     this.stopMove(); // 菜单悬停期间宠物不漫游
-    // 桌面专属工具根项 + 共享菜单树（动作 → 分类 → 具体动画）。碎碎念/对话无条件显示：手动触发
-    // 不受 whisperEnabled 限制（该字段只影响自动轮询）。首项文案与去向随宿主形态变，见 OPEN_LABEL。
-    // 顺序：打开软件 / 余额 / 待办 / 碎碎念 / 对话 / 配图 / 睡觉 → 动作树 → 显示位置 / 重载配置 / 回到初始位置。
+    this.menuPoint = { x: e.clientX, y: e.clientY }; // 会话列表异步拉到后按原坐标重开菜单用
+    this.openMenuAt(e.clientX, e.clientY);
+  },
+
+  /**
+   * 在指定坐标挂右键菜单（onContextMenu 与会话列表重开共用一条路径）。
+   *
+   * 树的构建在 buildContextMenuTree：每次打开都按当前状态重建，因此异步数据到位后
+   * closeMenu + openMenuAt 原坐标重开一次即可让「DSH 会话」枝从占位变成完整列表。
+   */
+  openMenuAt(x, y) {
+    const tree = this.buildContextMenuTree();
+    if (!tree.length) return;
+    this.menuOpen = true;
+    this.setInteractive(true); // 菜单是窗口内 DOM：悬停期间整窗保持可交互，关闭后恢复命中区穿透
+    this.syncInputBusy();
+    window.__dshPetDebug.menuOpen = true;
+    const m = S.mountContextMenu({
+      tree,
+      x,
+      y,
+      // 只允许在「窗口 ∩ 工作区」内显示：宠物贴边时外扩余量伸出屏幕，菜单走进那里会被 OS 裁掉
+      clamp: this.visibleClampRect(),
+      onAction: (leaf) => this.onMenuAction(leaf),
+      // 菜单被点外/Esc 关闭（非菜单项路径）：同样复位可交互标记，恢复命中区判定
+      onClose: () => {
+        this.menuOpen = false;
+        window.__dshPetDebug.menuOpen = false;
+        this.syncInputBusy();
+        if (!this.inputBusy()) this.setInteractive(false);
+      },
+    });
+    this.menuClose = m.close;
+    this.syncInputRegions(); // mountContextMenu 完成布局后才能读取菜单矩形
+  },
+
+  /**
+   * 组装整棵右键菜单树（纯构建，无副作用——重开菜单时重复调用安全）。
+   *
+   * 桌面专属工具根项 + 共享菜单树（动作 → 分类 → 具体动画）。碎碎念/对话无条件显示：手动触发
+   * 不受 whisperEnabled 限制（该字段只影响自动轮询）。首项文案与去向随宿主形态变，见 OPEN_LABEL。
+   * 顺序：打开软件 / 余额 / 待办 / 碎碎念 / 对话 / DSH会话 / 配图 / 睡觉 → 动作树 → 显示位置 / 重载配置 / 回到初始位置。
+   */
+  buildContextMenuTree() {
     const tools = [
       {
         label: OPEN_LABEL[OPEN_TARGET],
@@ -36,6 +77,16 @@ Object.assign(PetSprite.prototype, {
       { label: '碎碎念', action: 'whisper' },
       { label: '对话', action: 'chat', hint: S.CHAT_HOTKEY_HINT },
     ];
+    // 「DSH 会话」：把 Helper 的聊天绑到某条 DSH 会话（同网页端右键宠物那份）。列表来自宿主
+    // /session-binding/sessions（Helper 拿不到客户端服务，宿主代枚举），打开菜单时异步拉；
+    // 数据没到前给一个「DSH 会话…」占位叶子，点它才重拉。
+    // 宿主旧版（404）/ available:false / 网络失败：枝不出现（有旧缓存仍用旧缓存）。
+    if (!this.dshSessionFetchedAt || Date.now() - this.dshSessionFetchedAt > 15000) {
+      this.refreshDshSessionMenu({ silent: true });
+    }
+    const dshSessionBranch = this.dshSessionMenu ? this.dshSessionMenu.branch : null;
+    if (dshSessionBranch) tools.push(dshSessionBranch);
+    else if (this.dshSessionListTried) tools.push({ label: 'DSH 会话…', action: 'dsh-session' });
     // 「配图」：与浏览器端同一份分支（纳入对话的配图 / 其他），点一张就用它说一句；没有可用图时
     // 返回 null，整项不出现。数据来自拍平层吹入的条目级字段（this.pet.memes / chatImageEnabled /
     // chatImageLimit），与网页端同一个 flattenConfigPets；缩略图走 BASE 的 /pic/memes 绝对地址
@@ -62,29 +113,87 @@ Object.assign(PetSprite.prototype, {
     // 第三方菜单项统一收在「更多」下：0 项不出现；某个 owner 只有 1 项时跳过 owner 那层直接平铺。
     // 放在最后——「更多」不插在工具项与动作之间。
     const more = S.buildMoreBranch(this.menuItems);
-    const tree = tools.concat(S.buildMenuTree(this.animations), tail, more ? [more] : []);
-    if (!tree.length) return;
-    this.menuOpen = true;
-    this.setInteractive(true); // 菜单是窗口内 DOM：悬停期间整窗保持可交互，关闭后恢复命中区穿透
-    this.syncInputBusy();
-    window.__dshPetDebug.menuOpen = true;
-    const m = S.mountContextMenu({
-      tree,
-      x: e.clientX,
-      y: e.clientY,
-      // 只允许在「窗口 ∩ 工作区」内显示：宠物贴边时外扩余量伸出屏幕，菜单走进那里会被 OS 裁掉
-      clamp: this.visibleClampRect(),
-      onAction: (leaf) => this.onMenuAction(leaf),
-      // 菜单被点外/Esc 关闭（非菜单项路径）：同样复位可交互标记，恢复命中区判定
-      onClose: () => {
-        this.menuOpen = false;
-        window.__dshPetDebug.menuOpen = false;
-        this.syncInputBusy();
-        if (!this.inputBusy()) this.setInteractive(false);
-      },
-    });
-    this.menuClose = m.close;
-    this.syncInputRegions(); // mountContextMenu 完成布局后才能读取菜单矩形
+    return tools.concat(S.buildMenuTree(this.animations), tail, more ? [more] : []);
+  },
+
+  /**
+   * 拉宿主 /session-binding/sessions 并重建「DSH 会话」枝（正在拉时不重入）。
+   *
+   * `silent`（打开菜单时的预取）：只更新缓存，绝不重开菜单——菜单还开着时重建 DOM 会
+   * 打断悬停，表现就是「鼠标一移到菜单上它就消失」。
+   * 显式点击占位叶子（不传 silent）：拉到后原坐标重开一次，把占位换成完整列表。
+   * 失败（宿主未启动 / 旧版 404 / available:false）：保留旧缓存（若有），没有就整枝不出现，
+   * 仅 console.warn——降级是静默的。行与分组逻辑在 shared/session-list（两端同一份）。
+   */
+  refreshDshSessionMenu(opts) {
+    if (this.dshSessionLoading) return;
+    const silent = !opts || opts.silent !== false;
+    this.dshSessionLoading = true;
+    fetch(BASE + '/session-binding/sessions')
+      .then((r) => (r.ok ? r.json() : null))
+      .then((data) => {
+        this.dshSessionLoading = false;
+        this.dshSessionListTried = true;
+        this.dshSessionFetchedAt = Date.now();
+        // data.ok 为假 = 响应异常；available:false = 宿主枚举不了（缺 sessionQuery）→ 枝不出现
+        if (!data || data.ok !== true) return;
+        if (data.available !== true) {
+          this.dshSessionAvailable = false;
+          this.dshSessionMenu = null;
+          return;
+        }
+        this.dshSessionAvailable = true;
+        this.dshSessionRows = Array.isArray(data.sessions) ? data.sessions : [];
+        this.dshSessionWorkspaces = data.workspaces === null ? undefined : data.workspaces;
+        this.dshSessionCurrent =
+          data.sessionBinding && typeof data.sessionBinding.sessionId === 'string' ? data.sessionBinding.sessionId : '';
+        this.dshSessionMenu = this.buildDshSessionTree();
+        // 只有「点占位叶子」这条显式路径才重开；静默预取不动已开着的菜单。
+        // 点叶子时 onMenuAction 已先关了菜单，所以这里不能再看 menuOpen。
+        if (!silent && this.menuPoint) {
+          this.openMenuAt(this.menuPoint.x, this.menuPoint.y);
+        }
+      })
+      .catch((e) => {
+        this.dshSessionLoading = false;
+        this.dshSessionListTried = true;
+        console.warn('[dsh-xiaojing] 会话列表拉取失败（宿主不可达？）', e);
+      });
+  },
+
+  /**
+   * 用缓存数据重建「DSH 会话」枝。
+   *
+   * 结构与网页端完全一致：DSH 会话 → 工作区 → 会话（嵌套子枝），同一工作区的会话收在组里。
+   */
+  buildDshSessionTree() {
+    return S.buildSessionMenu(this.dshSessionRows, this.dshSessionCurrent, this.dshSessionWorkspaces);
+  },
+
+  /**
+   * 「DSH 会话」枝里点了一项：写绑定（POST /session-binding，与网页端同一条路），气泡确认。
+   * 绑定成功后用缓存数据重建枝（✓ 挪到新选中的那项）；文案与网页端同一组。
+   */
+  applyDshSessionPick(pick) {
+    fetch(BASE + '/session-binding', {
+      method: 'POST',
+      headers: { 'content-type': 'application/json' },
+      body: JSON.stringify({ sessionId: pick.sessionId, enabled: pick.sessionId !== '' }),
+    })
+      .then((r) => (r.ok ? r.json() : null))
+      .then((data) => {
+        if (data && data.ok === true) {
+          this.dshSessionCurrent = pick.sessionId;
+          this.dshSessionMenu = this.buildDshSessionTree();
+          this.showWhisper(pick.sessionId !== '' ? '绑定到「' + pick.title + '」啦' : '解绑了');
+        } else {
+          this.showWhisper('绑定失败啦');
+        }
+      })
+      .catch((e) => {
+        console.warn('[dsh-xiaojing] 会话绑定请求失败（宿主不可达？）', e);
+        this.showWhisper('绑定失败啦');
+      });
   },
 
   /** keepFacing = 调用方已显式指定朝向：跳过下面「文字类动画点播前强制朝左」的镜像修正，显式值优先。 */
@@ -97,6 +206,21 @@ Object.assign(PetSprite.prototype, {
       const pool = Array.isArray(this.pet.sleepRefuseTexts) ? this.pet.sleepRefuseTexts : [];
       const text = pool[Math.floor(Math.random() * pool.length)];
       if (text !== undefined) this.showWhisper(text, undefined, undefined, SLEEP_REFUSE_BUBBLE_MS, false);
+      return;
+    }
+    // 「DSH 会话」占位叶子：显式点它才拉列表（首开数据未到 / 上次失败重试），拉到后原坐标重开
+    if (leaf.action === 'dsh-session') {
+      this.refreshDshSessionMenu({ silent: false });
+      return;
+    }
+    // 「DSH 会话」列表项：优先按叶子上带的 sessionId 分发（菜单树重建后已渲染的旧叶子照样点得动），
+    // 老叶子没有该字段时回落到 picks 的对象身份查表。
+    if (typeof leaf.sessionId === 'string') {
+      this.applyDshSessionPick({ sessionId: leaf.sessionId, title: leaf.label.replace(/\s*✓$/u, '') });
+      return;
+    }
+    if (this.dshSessionMenu && typeof this.dshSessionMenu.picks.has === 'function' && this.dshSessionMenu.picks.has(leaf)) {
+      this.applyDshSessionPick(this.dshSessionMenu.picks.get(leaf));
       return;
     }
     if (leaf.action === 'third-party') {
