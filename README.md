@@ -1,18 +1,10 @@
 # dsh-xiaojing（小鲸桌宠）🐾
-
-<p align="center">
-  <a href="https://www.npmjs.com/package/dsh-xiaojing"><img alt="npm version" src="https://img.shields.io/npm/v/dsh-xiaojing?label=npm&color=blue"></a>
-  <a href="https://www.npmjs.com/package/dsh-xiaojing"><img alt="npm monthly downloads" src="https://img.shields.io/npm/dm/dsh-xiaojing?label=%E6%9C%88%E4%B8%8B%E8%BD%BD&color=brightgreen"></a>
-  <a href="https://www.npmjs.com/package/dsh-xiaojing"><img alt="total downloads" src="https://img.shields.io/npm/dt/dsh-xiaojing?label=%E6%80%BB%E4%B8%8B%E8%BD%BD&color=success"></a>
-  <a href="https://github.com/dupengair/dsh-xiaojing/releases"><img alt="release downloads" src="https://img.shields.io/github/downloads/dupengair/dsh-xiaojing/total?label=Release%20%E4%B8%8B%E8%BD%BD&color=5C6BC0"></a>
-  <a href="https://github.com/dupengair/dsh-xiaojing"><img alt="stars" src="https://img.shields.io/github/stars/dupengair/dsh-xiaojing?style=social"></a>
-  <a href="https://github.com/dupengair/dsh-xiaojing/blob/main/LICENSE"><img alt="license" src="https://img.shields.io/github/license/dupengair/dsh-xiaojing?color=orange"></a>
-  <a href="https://awesome-dsh-plugin.com"><img alt="awesome dsh plugin" src="https://awesome-dsh-plugin.com/badge.svg"></a>
-  <a href="https://github.com/dupengair/dsh-xiaojing"><img alt="repo size" src="https://img.shields.io/github/repo-size/dupengair/dsh-xiaojing"></a>
-  <a href="https://github.com/dupengair/dsh-xiaojing/issues"><img alt="issues" src="https://img.shields.io/github/issues/dupengair/dsh-xiaojing"></a>
-  <img alt="platform" src="https://img.shields.io/badge/platform-DeepSeek%20Harness%20Web-8A2BE2">
-  <img alt="assets" src="https://img.shields.io/badge/assets-dynamic%20animations-ff69b4">
-</p>
+---
+1. 修改自：https://github.com/PC2005-cloud/dsh-pet （原作者 GitHub 地址）
+2. 主要添加功能：
+- 关联DSH会话：可选择绑定任一DSH会话，以及解绑
+- 插件名称改为：dsh-xiaojing，后续独立演进
+---
 
 一只住在 [DeepSeek Harness](https://github.com/deepseek-ai/deepseek-harness) 里的桌面宠物：待机呼吸、随机动作（打瞌睡、玩魔方、吃火锅……）、左右转向、屏幕漫游、点击 Q 弹、拖拽甩抛反弹、右键菜单点播——一百余个透明动画随时无缝衔接；还能跟随 DSH 会话事件切换工作状态动画、按档位播放余额动画 + 头顶气泡、碎碎念与对话聊天、窗口失焦时弹系统通知。可多开同屏，能脱离浏览器住上**桌面**（透明置顶小窗），也能自己添加**全新宠物种类**（pet pack）。
 
