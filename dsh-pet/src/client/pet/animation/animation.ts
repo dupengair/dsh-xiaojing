@@ -143,7 +143,7 @@ export function createOwnAnimation(deps: OwnAnimationDeps): OwnAnimation {
       return;
     }
     if (isEventAnim(cfg.animations.events, next)) {
-      console.log('[dsh-pet] ' + stamp(cfg.id) + ' switch ' + next + ' once=' + nextOnce);
+      console.log('[dsh-xiaojing] ' + stamp(cfg.id) + ' switch ' + next + ' once=' + nextOnce);
     }
     const swapGen = (gen += 1);
     pending = { anim: next, once: nextOnce, gen: swapGen };
@@ -188,7 +188,7 @@ export function createOwnAnimation(deps: OwnAnimationDeps): OwnAnimation {
         pending = null; // 释放挂起的换源，避免后续点击困在防重循环里。
         if (cuePlaybackId !== null) reportOnce(cuePlaybackId, 'failed', REASON_ASSET_LOAD);
         console.warn(
-          '[dsh-pet] 素材加载失败 pet=' +
+          '[dsh-xiaojing] 素材加载失败 pet=' +
             cfg.id +
             ' anim=' +
             next +
@@ -249,11 +249,11 @@ export function createOwnAnimation(deps: OwnAnimationDeps): OwnAnimation {
     });
     const petId = deps.cfg().id;
     if (cue.kind === 'work-rotate') {
-      console.log('[dsh-pet] ' + stamp(petId) + ' workStatus 档内轮换: ' + deps.currentAnim() + ' -> ' + cue.anim);
+      console.log('[dsh-xiaojing] ' + stamp(petId) + ' workStatus 档内轮换: ' + deps.currentAnim() + ' -> ' + cue.anim);
     } else if (cue.kind === 'work-replay') {
-      console.log('[dsh-pet] ' + stamp(petId) + ' workStatus 循环续播: ' + deps.currentAnim());
+      console.log('[dsh-xiaojing] ' + stamp(petId) + ' workStatus 循环续播: ' + deps.currentAnim());
     } else if (cue.kind === 'event-done') {
-      console.log('[dsh-pet] ' + stamp(petId) + ' 事件动画播完 ended anim=' + deps.currentAnim());
+      console.log('[dsh-xiaojing] ' + stamp(petId) + ' 事件动画播完 ended anim=' + deps.currentAnim());
     }
     return cue;
   };

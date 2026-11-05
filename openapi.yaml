@@ -2337,7 +2337,7 @@ paths:
               schema:
                 type: string
         "404":
-          description: "素材不存在（`dsh-pet: asset not found`）"
+          description: "素材不存在（`dsh-xiaojing: asset not found`）"
           content:
             text/plain:
               schema:
@@ -2660,7 +2660,7 @@ paths:
                 type: string
                 format: binary
         "404":
-          description: "音效不存在（`dsh-pet: sound not found`）"
+          description: "音效不存在（`dsh-xiaojing: sound not found`）"
           content:
             text/plain:
               schema:
@@ -2683,7 +2683,7 @@ paths:
                 type: string
                 format: binary
         "404":
-          description: "字体不存在（`dsh-pet: font not found`）"
+          description: "字体不存在（`dsh-xiaojing: font not found`）"
           content:
             text/plain:
               schema:
@@ -2734,13 +2734,13 @@ paths:
                 type: string
                 format: binary
         "400":
-          description: "素材根含非法字符（`dsh-pet: invalid asset root`）"
+          description: "素材根含非法字符（`dsh-xiaojing: invalid asset root`）"
           content:
             text/plain:
               schema:
                 type: string
         "404":
-          description: "图片不存在（`dsh-pet: pic not found`）"
+          description: "图片不存在（`dsh-xiaojing: pic not found`）"
           content:
             text/plain:
               schema:

@@ -141,7 +141,7 @@ export function installSectionNavIcon(target: SectionNavIcon): () => void {
   const doc = typeof document === 'undefined' ? undefined : document;
   const Observer = typeof MutationObserver === 'undefined' ? undefined : MutationObserver;
   if (doc === undefined || Observer === undefined || doc.body === null) {
-    console.warn('[dsh-pet] 设置页导航图标不可用：缺少 document / body / MutationObserver（齿轮照旧）');
+    console.warn('[dsh-xiaojing] 设置页导航图标不可用：缺少 document / body / MutationObserver（齿轮照旧）');
     return () => {};
   }
 
@@ -153,7 +153,7 @@ export function installSectionNavIcon(target: SectionNavIcon): () => void {
   const warnGlyph = (reason: string): void => {
     if (warnedGlyph) return;
     warnedGlyph = true;
-    console.warn('[dsh-pet] 设置页导航图标不可用：' + reason + '（齿轮照旧）');
+    console.warn('[dsh-xiaojing] 设置页导航图标不可用：' + reason + '（齿轮照旧）');
   };
 
   /** 解析并注入换字形样式；成功一次后不再重算，失败时留待面板下次出现再试。 */
@@ -199,7 +199,7 @@ export function installSectionNavIcon(target: SectionNavIcon): () => void {
     } catch (error) {
       if (!warned) {
         warned = true;
-        console.warn('[dsh-pet] 设置页导航图标补丁异常，本次跳过（齿轮照旧）：' + describe(error));
+        console.warn('[dsh-xiaojing] 设置页导航图标补丁异常，本次跳过（齿轮照旧）：' + describe(error));
       }
     }
   };

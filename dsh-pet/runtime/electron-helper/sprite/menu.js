@@ -182,10 +182,10 @@ Object.assign(PetSprite.prototype, {
   showBalanceFromMenu() {
     S.postAction(BALANCE_URL)
       .then((ok) => {
-        if (!ok) console.warn('[dsh-pet] 菜单查看余额：刷新动作未成功');
+        if (!ok) console.warn('[dsh-xiaojing] 菜单查看余额：刷新动作未成功');
       })
       .catch((e) => {
-        console.error('[dsh-pet] 菜单查看余额异常', e);
+        console.error('[dsh-xiaojing] 菜单查看余额异常', e);
       });
   },
 
@@ -202,10 +202,10 @@ Object.assign(PetSprite.prototype, {
     S.postAction(WHISPER_URL + '?pet=' + encodeURIComponent(this.pet.id) + '&surface=desktop' + pic)
       .then((ok) => {
         if (!ok)
-          console.warn('[dsh-pet] 菜单碎碎念：生成动作未成功 pet=' + this.pet.id + (image ? ' image=' + image : ''));
+          console.warn('[dsh-xiaojing] 菜单碎碎念：生成动作未成功 pet=' + this.pet.id + (image ? ' image=' + image : ''));
       })
       .catch((e) => {
-        console.warn('[dsh-pet] 菜单碎碎念异常', e);
+        console.warn('[dsh-xiaojing] 菜单碎碎念异常', e);
       });
   },
 
@@ -293,7 +293,7 @@ Object.assign(PetSprite.prototype, {
       clamp: this.visibleClampRect(),
       onSent: () => {
         // 发送成功：回复已写进 S → 版本号变 → 挂着的长轮询立刻返回并弹气泡
-        console.info('[dsh-pet] 对话已发送 pet=' + this.pet.id);
+        console.info('[dsh-xiaojing] 对话已发送 pet=' + this.pet.id);
       },
       onClose: () => {
         this.chatMount = null;
@@ -372,7 +372,7 @@ Object.assign(PetSprite.prototype, {
   // 不重试，失败只记日志——重载本身就是把本进程换掉。
   reloadDesktop() {
     fetch(BASE + '/reload', { method: 'POST' }).catch((e) => {
-      console.warn('[dsh-pet] 重载配置请求失败（宿主不可达？）', e);
+      console.warn('[dsh-xiaojing] 重载配置请求失败（宿主不可达？）', e);
     });
   },
 
@@ -386,7 +386,7 @@ Object.assign(PetSprite.prototype, {
       headers: { 'content-type': 'application/json' },
       body: JSON.stringify({ id: this.pet.id, display }),
     }).catch((e) => {
-      console.warn('[dsh-pet] 显示位置请求失败（宿主不可达？）', e);
+      console.warn('[dsh-xiaojing] 显示位置请求失败（宿主不可达？）', e);
     });
   },
 

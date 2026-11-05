@@ -175,7 +175,7 @@ export class TodoStore {
       raw = await readFile(this.file, 'utf8');
     } catch (error) {
       if ((error as NodeJS.ErrnoException).code !== 'ENOENT') {
-        this.log.warn?.(`[dsh-pet] 待办文件读取失败，按空清单继续：${messageOf(error)}`);
+        this.log.warn?.(`[dsh-xiaojing] 待办文件读取失败，按空清单继续：${messageOf(error)}`);
       }
       return [];
     }
@@ -183,7 +183,7 @@ export class TodoStore {
       return parseTodoFile(JSON.parse(raw));
     } catch (error) {
       // 坏文件不备份、不改写：先按空清单跑，下一次写入自然覆盖。
-      this.log.warn?.(`[dsh-pet] 待办文件解析失败，按空清单继续：${messageOf(error)}`);
+      this.log.warn?.(`[dsh-xiaojing] 待办文件解析失败，按空清单继续：${messageOf(error)}`);
       return [];
     }
   }

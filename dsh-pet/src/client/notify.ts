@@ -125,7 +125,7 @@ function toast(title: string, body?: string, icon?: string, sessionId?: string):
   if (!notifyEnabled) return;
   if (isPageActive()) return;
   if (typeof Notification === 'undefined' || Notification.permission !== 'granted') return;
-  console.log('[dsh-pet] 【弹窗】' + title + (body ? '：' + body : ''));
+  console.log('[dsh-xiaojing] 【弹窗】' + title + (body ? '：' + body : ''));
   try {
     const opts: NotificationOptions = {};
     if (body) opts.body = truncate(body);

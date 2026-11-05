@@ -66,7 +66,7 @@ async function saveUserLayer(deps: PetRouteDeps, input: RouteInput): Promise<Rou
     // flattenConfigPets 拍平渲染，客户端的条目级字段只有这一处填充。
     return okResult(readAllConfig(configPaths));
   } catch (e) {
-    ctx.logger?.warn?.(`[dsh-pet] config save failed: ${e instanceof Error ? e.message : String(e)}`);
+    ctx.logger?.warn?.(`[dsh-xiaojing] config save failed: ${e instanceof Error ? e.message : String(e)}`);
     return failResult('generate-error', 'failed to save config');
   }
 }

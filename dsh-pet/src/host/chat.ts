@@ -147,7 +147,7 @@ export async function generateChat(input: ChatGenerateInput): Promise<ChatGenera
     if (i + 1 < candidates.length) {
       defaultLog(
         'warn',
-        `dsh-pet: 对话用 ${modelLabel(sel)} 生成失败（${result.message ?? result.reason}），回落到 ${modelLabel(candidates[i + 1])}`,
+        `dsh-xiaojing: 对话用 ${modelLabel(sel)} 生成失败（${result.message ?? result.reason}），回落到 ${modelLabel(candidates[i + 1])}`,
       );
     }
   }

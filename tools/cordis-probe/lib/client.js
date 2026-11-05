@@ -64,7 +64,7 @@
    * 用来把「本插件提供的服务」从 DSH 平台那几十个服务里挑出来：`Fiber.name` 会从最近的
    * 有名祖先继承，所以 dsh-pet 里 `ctx.provide()` 出来的服务，其 fiber.name 就是它。
    */
-  const OWNER_NAMES = ['pet', 'dsh-pet'];
+  const OWNER_NAMES = ['pet', 'dsh-pet', 'dsh-xiaojing'];
 
   /**
    * 面板样式。

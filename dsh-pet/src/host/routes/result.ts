@@ -96,7 +96,7 @@ export function payloadTooLarge(message = 'request body too large'): RouteResult
 
 /** 未预期异常：500。文案固定，真实原因只进日志，不外泄路径与内部细节。 */
 export function internalError(): RouteResult {
-  return rejected(500, 'internal-error', 'dsh-pet: internal error');
+  return rejected(500, 'internal-error', 'dsh-xiaojing: internal error');
 }
 
 /** 协议失败：真实状态码 + 与业务失败同一形状的体。 */

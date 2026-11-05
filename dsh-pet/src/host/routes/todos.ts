@@ -97,7 +97,7 @@ export async function handleTodoRoutes(deps: PetRouteDeps, input: RouteInput): P
     return methodNotAllowed();
   } catch (error) {
     // 写盘失败（磁盘满 / 权限）：真实原因只进日志，响应里只回分类文案。
-    log.warn(`[dsh-pet] 待办读写失败：${error instanceof Error ? error.message : String(error)}`);
-    return failResult('internal-error', 'dsh-pet: 待办读写失败');
+    log.warn(`[dsh-xiaojing] 待办读写失败：${error instanceof Error ? error.message : String(error)}`);
+    return failResult('internal-error', 'dsh-xiaojing: 待办读写失败');
   }
 }

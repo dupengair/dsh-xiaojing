@@ -92,7 +92,7 @@ export function storageEntries(input: StoragePathInput): StorageEntry[] {
 /**
  * 从本包路径反推 profile 名（设置页拼卸载命令用）。
  *
- * 常规安装形态是 <$DSH_HOME>/profiles/<name>/node_modules/dsh-pet；反推不出来（link: 安装到别处、
+ * 常规安装形态是 <$DSH_HOME>/profiles/<name>/node_modules/dsh-xiaojing；反推不出来（link: 安装到别处、
  * 或装在 profiles/node_modules 共享层）返回 undefined，由客户端退回占位符——宁可不给名字，也不猜错。
  * @param packageRoot - 本包根目录。
  * @returns profile 名，或 undefined。

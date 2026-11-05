@@ -31,7 +31,7 @@ export interface CommandFace {
 export function installCommandFaces(commandUi: CommandUiLike, faces: ReadonlyMap<string, CommandFace>): () => void {
   const original = commandUi.candidates;
   if (typeof original !== 'function') {
-    console.warn('[dsh-pet] 命令图标不可用：commandUi.candidates 缺失（命令本身仍可用，只是没有图标）');
+    console.warn('[dsh-xiaojing] 命令图标不可用：commandUi.candidates 缺失（命令本身仍可用，只是没有图标）');
     return () => {};
   }
 
@@ -49,7 +49,7 @@ export function installCommandFaces(commandUi: CommandUiLike, faces: ReadonlyMap
       });
     } catch (error) {
       console.warn(
-        '[dsh-pet] 命令图标补丁异常，本次退回原始菜单行：' + (error instanceof Error ? error.message : String(error)),
+        '[dsh-xiaojing] 命令图标补丁异常，本次退回原始菜单行：' + (error instanceof Error ? error.message : String(error)),
       );
       return rows;
     }

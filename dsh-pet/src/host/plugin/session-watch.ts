@@ -263,7 +263,7 @@ export function registerSessionWatch(deps: SessionWatchInput): void {
       for (const t of terminalTimers.values()) clearTimeout(t);
       terminalTimers.clear();
     };
-  }, 'dsh-pet: work-status session events');
+  }, 'dsh-xiaojing: work-status session events');
 
   // 系统通知：监听 DSH 宿主事件生成通知帧入队，浏览器轮询 /state 读到后弹 toast（帧契约与
   // shared/notify.ts 一致）。事件源：turn/end、approval/asked、tool/call（ask_user_question）、
@@ -315,5 +315,5 @@ export function registerSessionWatch(deps: SessionWatchInput): void {
       sessionDispose();
       errorDispose();
     };
-  }, 'dsh-pet: notify frames');
+  }, 'dsh-xiaojing: notify frames');
 }

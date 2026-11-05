@@ -1,15 +1,15 @@
-# dsh-pet 🐾
+# dsh-xiaojing（小鲸桌宠）🐾
 
 <p align="center">
-  <a href="https://www.npmjs.com/package/dsh-pet"><img alt="npm version" src="https://img.shields.io/npm/v/dsh-pet?label=npm&color=blue"></a>
-  <a href="https://www.npmjs.com/package/dsh-pet"><img alt="npm monthly downloads" src="https://img.shields.io/npm/dm/dsh-pet?label=%E6%9C%88%E4%B8%8B%E8%BD%BD&color=brightgreen"></a>
-  <a href="https://www.npmjs.com/package/dsh-pet"><img alt="total downloads" src="https://img.shields.io/npm/dt/dsh-pet?label=%E6%80%BB%E4%B8%8B%E8%BD%BD&color=success"></a>
-  <a href="https://github.com/PC2005-cloud/dsh-pet/releases"><img alt="release downloads" src="https://img.shields.io/github/downloads/PC2005-cloud/dsh-pet/total?label=Release%20%E4%B8%8B%E8%BD%BD&color=5C6BC0"></a>
-  <a href="https://github.com/PC2005-cloud/dsh-pet"><img alt="stars" src="https://img.shields.io/github/stars/PC2005-cloud/dsh-pet?style=social"></a>
-  <a href="https://github.com/PC2005-cloud/dsh-pet/blob/main/LICENSE"><img alt="license" src="https://img.shields.io/github/license/PC2005-cloud/dsh-pet?color=orange"></a>
+  <a href="https://www.npmjs.com/package/dsh-xiaojing"><img alt="npm version" src="https://img.shields.io/npm/v/dsh-xiaojing?label=npm&color=blue"></a>
+  <a href="https://www.npmjs.com/package/dsh-xiaojing"><img alt="npm monthly downloads" src="https://img.shields.io/npm/dm/dsh-xiaojing?label=%E6%9C%88%E4%B8%8B%E8%BD%BD&color=brightgreen"></a>
+  <a href="https://www.npmjs.com/package/dsh-xiaojing"><img alt="total downloads" src="https://img.shields.io/npm/dt/dsh-xiaojing?label=%E6%80%BB%E4%B8%8B%E8%BD%BD&color=success"></a>
+  <a href="https://github.com/dupengair/dsh-xiaojing/releases"><img alt="release downloads" src="https://img.shields.io/github/downloads/dupengair/dsh-xiaojing/total?label=Release%20%E4%B8%8B%E8%BD%BD&color=5C6BC0"></a>
+  <a href="https://github.com/dupengair/dsh-xiaojing"><img alt="stars" src="https://img.shields.io/github/stars/dupengair/dsh-xiaojing?style=social"></a>
+  <a href="https://github.com/dupengair/dsh-xiaojing/blob/main/LICENSE"><img alt="license" src="https://img.shields.io/github/license/dupengair/dsh-xiaojing?color=orange"></a>
   <a href="https://awesome-dsh-plugin.com"><img alt="awesome dsh plugin" src="https://awesome-dsh-plugin.com/badge.svg"></a>
-  <a href="https://github.com/PC2005-cloud/dsh-pet"><img alt="repo size" src="https://img.shields.io/github/repo-size/PC2005-cloud/dsh-pet"></a>
-  <a href="https://github.com/PC2005-cloud/dsh-pet/issues"><img alt="issues" src="https://img.shields.io/github/issues/PC2005-cloud/dsh-pet"></a>
+  <a href="https://github.com/dupengair/dsh-xiaojing"><img alt="repo size" src="https://img.shields.io/github/repo-size/dupengair/dsh-xiaojing"></a>
+  <a href="https://github.com/dupengair/dsh-xiaojing/issues"><img alt="issues" src="https://img.shields.io/github/issues/dupengair/dsh-xiaojing"></a>
   <img alt="platform" src="https://img.shields.io/badge/platform-DeepSeek%20Harness%20Web-8A2BE2">
   <img alt="assets" src="https://img.shields.io/badge/assets-dynamic%20animations-ff69b4">
 </p>
@@ -31,8 +31,8 @@ AI 生成动画的配方     源视频 → 透明动画的管线    运行在 DS
 
 两种装法，任选一种：
 
-- **图形化（桌面应用内）**：打开「插件管理」页，在安装框里填 `dsh-pet`，不用开终端。
-- **命令行**：`dsh plugin --profile <profile> add dsh-pet`，`<profile>` 按你在用的界面填——`dsh web` 填 `web`，桌面应用（Electron 版）填 `desktop`。
+- **图形化（桌面应用内）**：打开「插件管理」页，在安装框里填 `dsh-xiaojing`，不用开终端。
+- **命令行**：`dsh plugin --profile <profile> add dsh-xiaojing`，`<profile>` 按你在用的界面填——`dsh web` 填 `web`，桌面应用（Electron 版）填 `desktop`。
 
 **不想装 DSH？** Release 里提供 Windows x64 绿色包 `dsh-pet-win-x64.zip`，解压后双击 `dsh-pet.exe` 就能跑——那是独立模式，不依赖 DSH 环境。
 
@@ -91,14 +91,14 @@ AI 生成动画的配方     源视频 → 透明动画的管线    运行在 DS
 宠物实际运行在 DSH Web 界面中的样子：
 
 <p>
-  <img src="assets/screenshots/dsh-pet-running-1.png" width="380" alt="dsh-pet 运行效果 1" title="dsh-pet 运行效果 1">
-  <img src="assets/screenshots/dsh-pet-running-2.png" width="380" alt="dsh-pet 运行效果 2" title="dsh-pet 运行效果 2">
-  <img src="assets/screenshots/dsh-pet-running-3.png" width="380" alt="dsh-pet 运行效果 3" title="dsh-pet 运行效果 3">
-  <img src="assets/screenshots/dsh-pet-running-4.png" width="380" alt="dsh-pet 运行效果 4" title="dsh-pet 运行效果 4">
-  <img src="assets/screenshots/dsh-pet-running-5.png" width="380" alt="dsh-pet 运行效果 5" title="dsh-pet 运行效果 5">
-  <img src="assets/screenshots/dsh-pet-running-6.png" width="380" alt="dsh-pet 运行效果 6" title="dsh-pet 运行效果 6">
-  <img src="assets/screenshots/dsh-pet-running-7.png" width="380" alt="dsh-pet 运行效果 7" title="dsh-pet 运行效果 7">
-  <img src="assets/screenshots/dsh-pet-running-8.png" width="380" alt="dsh-pet 运行效果 8" title="dsh-pet 运行效果 8">
+  <img src="assets/screenshots/dsh-pet-running-1.png" width="380" alt="小鲸桌宠 运行效果 1" title="小鲸桌宠 运行效果 1">
+  <img src="assets/screenshots/dsh-pet-running-2.png" width="380" alt="小鲸桌宠 运行效果 2" title="小鲸桌宠 运行效果 2">
+  <img src="assets/screenshots/dsh-pet-running-3.png" width="380" alt="小鲸桌宠 运行效果 3" title="小鲸桌宠 运行效果 3">
+  <img src="assets/screenshots/dsh-pet-running-4.png" width="380" alt="小鲸桌宠 运行效果 4" title="小鲸桌宠 运行效果 4">
+  <img src="assets/screenshots/dsh-pet-running-5.png" width="380" alt="小鲸桌宠 运行效果 5" title="小鲸桌宠 运行效果 5">
+  <img src="assets/screenshots/dsh-pet-running-6.png" width="380" alt="小鲸桌宠 运行效果 6" title="小鲸桌宠 运行效果 6">
+  <img src="assets/screenshots/dsh-pet-running-7.png" width="380" alt="小鲸桌宠 运行效果 7" title="小鲸桌宠 运行效果 7">
+  <img src="assets/screenshots/dsh-pet-running-8.png" width="380" alt="小鲸桌宠 运行效果 8" title="小鲸桌宠 运行效果 8">
 </p>
 
 ## 效果预览
@@ -297,7 +297,7 @@ AI 提示词 → 绿幕视频 → 透明动画 → 插件，换角色、换动�
 ├── assets/            # 仓库展示用截图
 ├── tools/             # 开发工具：API 调试页、cordis-probe mock 服务商、DPI 探针
 ├── .github/workflows/ # CI：Safari/HEVC 转码流水线（macOS runner，手动触发 → 发布 assets-mov Release）
-├── dsh-pet/           # ③ 插件（可独立 npm 发布）
+├── dsh-pet/           # ③ 插件（可独立 npm 发布；包名为 dsh-xiaojing）
 │   ├── src/
 │   │   ├── host/       # 宿主半侧：配置 / 路由 / 余额 / 工作状态
 │   │   ├── client/     # 浏览器半侧：宠物渲染 / 动画链 / 设置页
@@ -312,7 +312,7 @@ AI 提示词 → 绿幕视频 → 透明动画 → 插件，换角色、换动�
 
 ## 💬 反馈与发版节奏
 
-欢迎提 [issue](https://github.com/PC2005-cloud/dsh-pet/issues) 与 PR——bug、体验问题随时反馈。**新功能请先开 issue** 说明使用场景，确认后再动手，不要在确认前直接提交实现 PR。这个插件专注桌宠与 DSH 本身，偏离太远的需求一般不会做。动手前也请先翻一眼 [提交记录](https://github.com/PC2005-cloud/dsh-pet/commits/main)，确认不是已经修掉的同款问题（有些问题可能已经在 `main` 上修好了，只是还没发版）。
+欢迎提 [issue](https://github.com/dupengair/dsh-xiaojing/issues) 与 PR——bug、体验问题随时反馈。**新功能请先开 issue** 说明使用场景，确认后再动手，不要在确认前直接提交实现 PR。这个插件专注桌宠与 DSH 本身，偏离太远的需求一般不会做。动手前也请先翻一眼 [提交记录](https://github.com/dupengair/dsh-xiaojing/commits/main)，确认不是已经修掉的同款问题（有些问题可能已经在 `main` 上修好了，只是还没发版）。
 
 - **小修不单独发版**：不影响使用的小 bug 与优化会**累计**到下一个版本一起发，避免版本更迭过于频繁。所以「`main` 上已经修了」不等于「你装的这版已经包含」——`latest` 没更新时，以 `main` 的提交记录为准。
 - **想立刻用上未发布的修复**：按 [INSTALL.md](INSTALL.md) 的「从源码安装」把插件指向本地仓库即可；注意**宿主半侧**的代码改动要**重开 DSH** 才生效（浏览器半侧刷新页面即可）。
@@ -322,6 +322,7 @@ AI 提示词 → 绿幕视频 → 透明动画 → 插件，换角色、换动�
 
 - 代码：MIT
 - 素材（动画/提示词/源视频）：允许开源使用，**禁止商用**
+- **本项目**是基于 [dsh-pet](https://github.com/PC2005-cloud/dsh-pet) 的 fork 改名版（dsh-xiaojing）。
 - **二次创作（二创）约定**：基于本项目的衍生 / 改版 / 换皮作品，在 **GitHub 仓库、产品官网等公开渠道**上须附上原作者 GitHub 地址：<https://github.com/PC2005-cloud/dsh-pet>
 - **形象出处**：宠物形象为社区二创的 DeepSeek「大肥鱼」（鲸鱼娘），**非 DeepSeek 官方形象**；原型「溟月」出自 B 站 [@上善无形](https://space.bilibili.com/4456176)，DeepSeek 版（女仆鲸鱼娘）设计出自 B 站 [@ZipZipPipe](https://space.bilibili.com/4168597)
 - **形象授权**：[CC BY-NC-SA 4.0](https://creativecommons.org/licenses/by-nc-sa/4.0/deed.zh-hans)（署名 · 非商业 · 相同方式共享），[声明原文](https://www.bilibili.com/opus/1247156596114456581)：「大肥鱼是遵守CC BY-NC-SA 4.0协议的形象，不可以以任何形式商业化。若您非常喜爱该形象，希望其拥有实体，您可以自行定制。」

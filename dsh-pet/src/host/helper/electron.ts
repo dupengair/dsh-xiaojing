@@ -183,8 +183,8 @@ export async function ensureElectronDownload(options: EnsureElectronOptions = {}
   // 下载日志默认走 console；宿主会把它自己的统一日志器传进来——桌面版没有控制台，console 直出
   // 等于丢失（ctx.logger 在部分宿主也不映射到终端）。
   const sink = options.logger ?? console;
-  const log = (message: string): void => sink.info?.(`[dsh-pet] ${message}`);
-  const warn = (message: string): void => sink.warn?.(`[dsh-pet] ${message}`);
+  const log = (message: string): void => sink.info?.(`[dsh-xiaojing] ${message}`);
+  const warn = (message: string): void => sink.warn?.(`[dsh-xiaojing] ${message}`);
   // 同一件事两个出口（见 EnsureElectronOptions.onLog）：console 原文 + 给用户看的一句。
   // 文案刻意分成两套——版本号 / 路径 / 耗时对开发者有用，对用户是噪音，不合并成同一句。
   const info = (consoleText: string, text: string, done = false): void => {
@@ -269,7 +269,7 @@ export async function ensureElectronDownload(options: EnsureElectronOptions = {}
 export function defaultLaunch(options: HelperOptions = {}): { command: string; args: string[] } {
   const electronPath = resolveElectronPath([options.electronPath]);
   if (!electronPath) {
-    throw new Error('dsh-pet: cannot resolve Electron executable. Set DSH_PET_ELECTRON_PATH or install electron.');
+    throw new Error('dsh-xiaojing: cannot resolve Electron executable. Set DSH_PET_ELECTRON_PATH or install electron.');
   }
   const helperPath = options.helperPath || defaultHelperMain;
   return { command: electronPath, args: helperLaunchArgs(helperPath) };

@@ -151,11 +151,11 @@ export function createVoiceService(options: {
     const startedMs = Date.now();
     const cached = await findCached(target);
     if (cached) {
-      log?.info?.(`[dsh-pet] voice speak: cache=hit chars=${text.length} voice=${source}`);
+      log?.info?.(`[dsh-xiaojing] voice speak: cache=hit chars=${text.length} voice=${source}`);
       return { ok: true, file: cached };
     }
     if (queueUsed >= MAX_QUEUE) {
-      log?.warn?.(`[dsh-pet] voice speak: queue full (max ${MAX_QUEUE}) chars=${text.length} voice=${source}`);
+      log?.warn?.(`[dsh-xiaojing] voice speak: queue full (max ${MAX_QUEUE}) chars=${text.length} voice=${source}`);
       return { ok: false, reason: 'voice-busy', message: 'voice queue is full, retry later' };
     }
     const queue = { dropped: false };
@@ -175,18 +175,18 @@ export function createVoiceService(options: {
     } catch (error) {
       // 上游细节（含 URL、状态码）不外泄，只留在日志里
       log?.warn?.(
-        `[dsh-pet] voice speak: failed chars=${text.length} voice=${source} ` +
+        `[dsh-xiaojing] voice speak: failed chars=${text.length} voice=${source} ` +
           `ms=${Date.now() - startedMs} reason=${error instanceof VoiceSynthError ? error.message : String(error)}`,
       );
       return { ok: false, reason: 'generate-error', message: 'voice synthesis failed' };
     }
     if (queue.dropped) {
       log?.warn?.(
-        `[dsh-pet] voice speak: dropped chars=${text.length} voice=${source} queued=${Date.now() - queuedMs}ms`,
+        `[dsh-xiaojing] voice speak: dropped chars=${text.length} voice=${source} queued=${Date.now() - queuedMs}ms`,
       );
       return dropped();
     }
-    log?.info?.(`[dsh-pet] voice speak: cache=miss chars=${text.length} voice=${source} ms=${Date.now() - startedMs}`);
+    log?.info?.(`[dsh-xiaojing] voice speak: cache=miss chars=${text.length} voice=${source} ms=${Date.now() - startedMs}`);
     return { ok: true, file: target };
   }
 

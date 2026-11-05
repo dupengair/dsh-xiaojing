@@ -4,7 +4,7 @@
 import type { Key } from './zh.ts';
 
 export const es: Record<Key, string> = {
-  nav: 'Configuración de mascotas',
+  nav: 'Mascota Xiaojing',
   intro:
     'Gestiona varias mascotas: cada una tiene su propio tamaño y posición (se aplica al instante después de guardar).',
   // 卡片标题与卡片级说明；说明统一进问号气泡。
@@ -290,5 +290,5 @@ export const es: Record<Key, string> = {
   'motion.turn': 'Giro',
   'motion.move': 'Movimiento',
   'motion.action': 'Acción aleatoria',
-  uninstallCmd: 'dsh plugin --profile {profile} remove dsh-pet',
+  uninstallCmd: 'dsh plugin --profile {profile} remove dsh-xiaojing',
 };

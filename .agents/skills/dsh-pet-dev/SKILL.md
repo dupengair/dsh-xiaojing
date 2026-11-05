@@ -1,6 +1,6 @@
 ---
 name: dsh-pet-dev
-description: "本仓库（dsh-pet 宠物插件）的开发总则：把任务边界、插件代码规范、注释规范与提交规范串成一条执行链，一次调用覆盖从改代码到提交的全过程。"
+description: "本仓库（dsh-xiaojing 宠物插件，目录仍名 dsh-pet）的开发总则：把任务边界、插件代码规范、注释规范与提交规范串成一条执行链，一次调用覆盖从改代码到提交的全过程。"
 whenToUse: "在本仓库改动任何代码、注释、文档或准备提交时使用：用户说“改这个”“加个功能”“修一下”“提交推送”，或用户手动调用 dsh-pet-dev 时。"
 metadata:
   language: "zh"
@@ -9,7 +9,7 @@ disable-model-invocation: true
 user-invocable: true
 ---
 
-# dsh-pet 开发总则（dsh-pet-dev）
+# dsh-xiaojing 开发总则（dsh-pet-dev）
 
 ## 目标
 

@@ -22,14 +22,14 @@ export function parseAccountBalance(
   snapshot: AccountBalanceSnapshot | null | undefined,
   provider: string,
 ): BalanceSuccess {
-  if (!snapshot) throw new Error('dsh-pet: 账号未登录（deepseek-account）');
-  if (snapshot.status !== 'ready') throw new Error('dsh-pet: 账号余额查询失败');
+  if (!snapshot) throw new Error('dsh-xiaojing: 账号未登录（deepseek-account）');
+  if (snapshot.status !== 'ready') throw new Error('dsh-xiaojing: 账号余额查询失败');
   const wallets = Array.isArray(snapshot.value) ? snapshot.value : [];
   // 充值钱包为空 = 没有可展示的余额（如只送不充的新号），报错而非显示 ¥0.00。
-  if (wallets.length === 0) throw new Error('dsh-pet: 账号没有充值钱包余额');
+  if (wallets.length === 0) throw new Error('dsh-xiaojing: 账号没有充值钱包余额');
   // 全部钱包按币种搬出，由展示层决定显示哪些；只取首条会把排在前面的空 USD 钱包当成余额。
   const candidates = wallets.map((w) => obj(w as unknown)).filter((w): w is Record<string, unknown> => w !== undefined);
-  if (candidates.length === 0) throw new Error('dsh-pet: 账号钱包结构非法');
+  if (candidates.length === 0) throw new Error('dsh-xiaojing: 账号钱包结构非法');
 
   // 同币种可能有多条钱包，按币种累加，不丢钱。
   const toppedUpBy = new Map<string, string>();
@@ -79,7 +79,7 @@ export const deepseekAccount: BalanceProvider = {
   credential: { mode: 'none' },
   async fetch({ provider, resolveAccount }) {
     // 上游已保证 none 路由的 resolveAccount 在场；此处只在不变量被破坏时触发。
-    if (!resolveAccount) throw new Error('dsh-pet: 缺少账号服务（' + provider + '）');
+    if (!resolveAccount) throw new Error('dsh-xiaojing: 缺少账号服务（' + provider + '）');
     return parseAccountBalance(await resolveAccount(), provider);
   },
 };

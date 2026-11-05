@@ -93,7 +93,7 @@ export function createPetMulti(
       if (show) setBalanceNoticeTick((t) => t + 1); // 弹文字说明气泡（不播动画）
       // 未登记服务商是配置事实，已由气泡说明；其余原因照旧显式报错。
       if (state.reason !== 'unsupported') {
-        console.error('[dsh-pet] 余额查询失败 reason=' + state.reason + (state.message ? ' ' + state.message : ''));
+        console.error('[dsh-xiaojing] 余额查询失败 reason=' + state.reason + (state.message ? ' ' + state.message : ''));
       }
     };
     // 工作状态：容器统一轮询 sections.workStatus，快照与 tick 驱动各宠物播档位动画。
@@ -146,7 +146,7 @@ export function createPetMulti(
           applyMerged(merged);
           setReady(true);
         } catch (e) {
-          console.error('[dsh-pet] 配置加载失败', e); // 成品拉取失败要显式报错，不静默隐藏。
+          console.error('[dsh-xiaojing] 配置加载失败', e); // 成品拉取失败要显式报错，不静默隐藏。
         }
       })();
       // 设置页保存或同步后，用权威成品重新拍平；传入 merged 时直接用写接口的响应体。
@@ -157,7 +157,7 @@ export function createPetMulti(
             if (!alive) return;
             applyMerged(next);
           } catch (e) {
-            console.error('[dsh-pet] 配置重载失败，保留当前渲染列表', e); // 显式报错，不清空已有宠物。
+            console.error('[dsh-xiaojing] 配置重载失败，保留当前渲染列表', e); // 显式报错，不清空已有宠物。
           }
         })();
       };

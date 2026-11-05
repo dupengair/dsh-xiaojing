@@ -1,4 +1,4 @@
-# 安装（dsh-pet）
+# 安装（dsh-xiaojing）
 
 > 返回 [README](README.md)
 
@@ -21,7 +21,7 @@ dsh --version   # 验证 dsh 命令可用
 
 ## 方式一：应用内「插件管理」（桌面应用）
 
-直接打开应用内「插件管理」页，在安装框里填 `dsh-pet`，不用开终端。需要在终端里操作插件时，用桌面应用自带的那份 CLI。
+直接打开应用内「插件管理」页，在安装框里填 `dsh-xiaojing`，不用开终端。需要在终端里操作插件时，用桌面应用自带的那份 CLI。
 
 ## 方式二：命令行（`dsh web` 与桌面应用）
 
@@ -34,10 +34,10 @@ dsh --version   # 验证 dsh 命令可用
 
 ```sh
 # dsh web
-dsh plugin --profile web add dsh-pet
+dsh plugin --profile web add dsh-xiaojing
 
 # 桌面应用（Electron 版）
-dsh plugin --profile desktop add dsh-pet
+dsh plugin --profile desktop add dsh-xiaojing
 ```
 
 > **兼容性**：本插件当前在 dsh **`0.2.2-alpha.2`** 下开发并测试（`dsh --version` 可查看你的版本）。建议使用相同版本；其他版本如遇问题欢迎反馈。
@@ -48,8 +48,8 @@ dsh plugin --profile desktop add dsh-pet
 
 ```sh
 # ① clone 本仓库，进入插件目录
-git clone https://github.com/PC2005-cloud/dsh-pet.git
-cd dsh-pet/dsh-pet
+git clone https://github.com/dupengair/dsh-xiaojing.git
+cd dsh-xiaojing/dsh-pet
 
 # ② 安装依赖
 npm install
@@ -70,7 +70,7 @@ dsh plugin --profile web add file:D:/path/to/dsh-pet/dsh-pet
 
 ### 直接运行（Release 绿色版）
 
-1. 到 [Releases](https://github.com/PC2005-cloud/dsh-pet/releases) 页面挑一个版本，下载它的 `dsh-pet-win-x64.zip`（固定名）；
+1. 到 [Releases](https://github.com/dupengair/dsh-xiaojing/releases) 页面挑一个版本，下载它的 `dsh-pet-win-x64.zip`（固定名）；
 2. 解压到任意目录，例如 `D:\dsh-pet`；
 3. 双击目录里的 `dsh-pet.exe`。
 
@@ -83,7 +83,7 @@ dsh plugin --profile web add file:D:/path/to/dsh-pet/dsh-pet
 需要 Node.js，跨平台通用：
 
 ```sh
-npm install -g dsh-pet        # 必须 npm 装；dsh plugin add 会装进 profile，bin 不在 PATH 上
+npm install -g dsh-xiaojing    # 必须 npm 装；dsh plugin add 会装进 profile，bin 不在 PATH 上
 dsh-pet-standalone            # http://127.0.0.1:3080/dsh-pet-7340/（端口占用则顺延）
 dsh-pet-standalone --check    # 只体检，不启动
 dsh-pet-standalone --port 3100
@@ -127,10 +127,10 @@ npm run dist              # electron-builder 打包
 2. **宿主自动补桌面运行时。** 本机没有 Electron 时，插件会自己下载一份（落在 `~/.dsh/electron`，同一版本只下一次；默认走 npmmirror 镜像）。进度直接打在 DSH 的控制台里，形如：
 
    ```
-   [dsh-pet] Electron not found, downloading to <用户目录>/.dsh/electron/electron.exe ...
-   [dsh-pet] Electron not found, downloading v43.3.0 (win32-x64) ...
-   [dsh-pet] downloading 42.3MB / 104.1MB
-   [dsh-pet] download complete (37.5s), extracting to <用户目录>/.dsh/electron ...
+   [dsh-xiaojing] Electron not found, downloading to <用户目录>/.dsh/electron/electron.exe ...
+   [dsh-xiaojing] Electron not found, downloading v43.3.0 (win32-x64) ...
+   [dsh-xiaojing] downloading 42.3MB / 104.1MB
+   [dsh-xiaojing] download complete (37.5s), extracting to <用户目录>/.dsh/electron ...
    ```
 
    这一步在**后台**进行，浏览器里的宠物照常可用；要等多久取决于网速（几十秒到几分钟），期间不用管它。

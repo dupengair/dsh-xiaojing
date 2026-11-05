@@ -43,7 +43,7 @@ export async function handleDesktopRoutes(deps: PetRouteDeps, input: RouteInput)
       try {
         (quit as (reason: string) => void)('托盘退出');
       } catch (e: unknown) {
-        log.warn(`[dsh-pet] 托盘退出失败：${e instanceof Error ? e.message : String(e)}`);
+        log.warn(`[dsh-xiaojing] 托盘退出失败：${e instanceof Error ? e.message : String(e)}`);
       }
     });
     return okResult({ ok: true });

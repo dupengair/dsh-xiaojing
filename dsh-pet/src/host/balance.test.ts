@@ -545,14 +545,14 @@ describe('deepseek-account —— DSH 账号路由（走账号服务，不是 HT
       'deepseek-account',
       async () => 'k',
       async () => {
-        throw new Error('dsh-pet: 账号余额查询失败');
+        throw new Error('dsh-xiaojing: 账号余额查询失败');
       },
     );
     assert.deepEqual(r, {
       ok: false,
       provider: 'deepseek-account',
       reason: 'fetch-error',
-      message: 'dsh-pet: 账号余额查询失败',
+      message: 'dsh-xiaojing: 账号余额查询失败',
     });
   });
 });

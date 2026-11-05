@@ -1,4 +1,4 @@
-# dsh-pet 对外 Cordis 服务
+# dsh-xiaojing（dsh-pet）对外 Cordis 服务
 
 同名服务 `petApi7340` 在两半各有一份，分属不同容器（宿主进程 / DSH web 页面），互不可见。
 
@@ -8,7 +8,7 @@
 ctx.get('petApi7340')
 ```
 
-拿不到对应分组 = 你在另一半，或 dsh-pet 未启用 / 版本过旧。
+拿不到对应分组 = 你在另一半，或 dsh-xiaojing 未启用 / 版本过旧。
 
 ## 客户端半侧（DSH web 页面内，只在该页面内有效）
 

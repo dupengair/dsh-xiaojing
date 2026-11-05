@@ -29,12 +29,12 @@ export const opencodeGo: BalanceProvider = {
     if (!res.ok) throw new Error('opencode usage HTTP ' + res.status);
     const body: unknown = await res.json();
     const usage = (body as { usage?: unknown })?.usage;
-    if (!usage || typeof usage !== 'object') throw new Error('dsh-pet: opencode usage 响应缺少 usage');
+    if (!usage || typeof usage !== 'object') throw new Error('dsh-xiaojing: opencode usage 响应缺少 usage');
     const u = usage as Record<string, { percent?: unknown; resetsAt?: unknown }>;
     const rolling = u.rolling,
       weekly = u.weekly,
       monthly = u.monthly;
-    if (!rolling || !weekly || !monthly) throw new Error('dsh-pet: opencode usage 响应缺少窗口');
+    if (!rolling || !weekly || !monthly) throw new Error('dsh-xiaojing: opencode usage 响应缺少窗口');
     return {
       ok: true,
       provider,

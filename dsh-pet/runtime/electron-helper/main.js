@@ -275,7 +275,7 @@ app.whenReady().then(() => {
     protocol.handle('dsh-pet-bridge', (request) =>
       bridge.handle(request).catch((e) => {
         console.error('[dsh-pet-desktop-helper] bridge handler error:', String(e && e.message ? e.message : e));
-        return new Response('dsh-pet: bridge error', {
+        return new Response('dsh-xiaojing: bridge error', {
           status: 502,
           headers: { 'access-control-allow-origin': '*' },
         });

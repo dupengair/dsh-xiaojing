@@ -3,7 +3,7 @@
  */
 
 export const zh = {
-  nav: '桌宠配置',
+  nav: '小鲸桌宠',
   intro: '管理多个桌宠：每个宠物可独立设置大小与位置（保存后即时生效）。',
   // 卡片标题与卡片级说明；说明统一进问号气泡。
   petCardTitle: '宠物配置',
@@ -258,7 +258,7 @@ export const zh = {
   'motion.turn': '转向',
   'motion.move': '移动',
   'motion.action': '随机动作',
-  uninstallCmd: 'dsh plugin --profile {profile} remove dsh-pet',
+  uninstallCmd: 'dsh plugin --profile {profile} remove dsh-xiaojing',
 };
 
 /** 文案键；zh 的键集即全集。 */

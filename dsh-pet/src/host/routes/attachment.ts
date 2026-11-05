@@ -19,16 +19,16 @@ const ATTACHMENT_ID = /^sha256:[a-f0-9]{64}$/;
 export async function handleAttachmentRoutes(deps: PetRouteDeps, input: RouteInput): Promise<RouteResult | undefined> {
   const { method, rest, url } = input;
   if (rest === 'attachment') {
-    if (method !== 'GET') return { kind: 'text', status: 405, body: 'dsh-pet: method not allowed' };
+    if (method !== 'GET') return { kind: 'text', status: 405, body: 'dsh-xiaojing: method not allowed' };
     const id = url.searchParams.get('id') ?? '';
-    if (!ATTACHMENT_ID.test(id)) return { kind: 'text', status: 400, body: 'dsh-pet: invalid attachment id' };
+    if (!ATTACHMENT_ID.test(id)) return { kind: 'text', status: 400, body: 'dsh-xiaojing: invalid attachment id' };
     const sink = deps.optionalService('attachments') as PetImageSink | undefined;
     // 独立模式没有附件服务：取图直接不可用（与 POST /chat 的图片能力同一降级口径）
     const file = locate(sink, id);
-    if (file === undefined) return { kind: 'text', status: 404, body: 'dsh-pet: attachment not found' };
+    if (file === undefined) return { kind: 'text', status: 404, body: 'dsh-xiaojing: attachment not found' };
     const contentType = sniffImageType(file);
     if (contentType === undefined) {
-      return { kind: 'text', status: 404, body: 'dsh-pet: attachment is not a displayable image' };
+      return { kind: 'text', status: 404, body: 'dsh-xiaojing: attachment is not a displayable image' };
     }
     return { kind: 'file', file, contentType };
   }

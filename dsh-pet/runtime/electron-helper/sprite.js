@@ -151,7 +151,7 @@ class PetSprite {
       facing: this._facing,
     };
     void S.postAction(POSE_REPORT_URL + '?pet=' + encodeURIComponent(this.pet.id), body).then((ok) => {
-      if (!ok) console.warn('[dsh-pet] 实况上报未送达 pet=' + this.pet.id);
+      if (!ok) console.warn('[dsh-xiaojing] 实况上报未送达 pet=' + this.pet.id);
     });
   }
 
@@ -277,7 +277,7 @@ class PetSprite {
     if (!playbackId) return;
     const body = reason ? { status, reason } : { status };
     void S.postAction(BASE + '/playback/' + encodeURIComponent(playbackId) + '/report', body).then((ok) => {
-      if (!ok) console.warn('[dsh-pet] 播放回执未送达 pet=' + this.pet.id + ' id=' + playbackId + ' status=' + status);
+      if (!ok) console.warn('[dsh-xiaojing] 播放回执未送达 pet=' + this.pet.id + ' id=' + playbackId + ' status=' + status);
     });
   }
 

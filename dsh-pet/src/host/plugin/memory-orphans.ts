@@ -71,7 +71,7 @@ export function createMemoryOrphans(deps: OrphanDeps) {
         if (Object.keys(byPet).length === 0) delete mem[entry];
       }
       if (pets > 0) await writeMemory(mem);
-      deps.log.info(`[dsh-pet] 清理已删宠物的历史 pets=${pets}，messages=${messages}`);
+      deps.log.info(`[dsh-xiaojing] 清理已删宠物的历史 pets=${pets}，messages=${messages}`);
       return { ok: true as const, pets, messages };
     });
 

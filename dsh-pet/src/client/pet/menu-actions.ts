@@ -82,7 +82,7 @@ async function switchDisplay(deps: MenuActionDeps, display: string): Promise<voi
     // 响应体就是改动后的成品聚合，必须交给容器；否则会再拉一次 GET /config，可能拿到旧值。
     deps.applyMerged(body as Record<string, Record<string, unknown>>);
   } catch (error) {
-    deps.warn('[dsh-pet] 显示位置切换失败 ' + (error instanceof Error ? error.message : String(error)));
+    deps.warn('[dsh-xiaojing] 显示位置切换失败 ' + (error instanceof Error ? error.message : String(error)));
   }
 }
 
@@ -99,9 +99,9 @@ export function createMenuActions(deps: MenuActionDeps): MenuActions {
   const fireAction = (route: string, label: string): void => {
     postAction(route)
       .then((ok: boolean) => {
-        if (!ok) deps.warn('[dsh-pet] ' + label + '失败 pet=' + petId);
+        if (!ok) deps.warn('[dsh-xiaojing] ' + label + '失败 pet=' + petId);
       })
-      .catch((error: unknown) => deps.warn('[dsh-pet] ' + label + '异常 pet=' + petId + ' ' + String(error)));
+      .catch((error: unknown) => deps.warn('[dsh-xiaojing] ' + label + '异常 pet=' + petId + ' ' + String(error)));
   };
 
   const run = (leaf: MenuLeaf, playbackId?: string, keepFacing = false, hostInstruction = false): void => {
@@ -127,7 +127,7 @@ export function createMenuActions(deps: MenuActionDeps): MenuActions {
         // 同页消费者（petApi7340.menuEvents）当场就能取到；HTTP 照旧上报，桌面端与老扩展仍读宿主那份。
         setMenuClick(owner, leaf.label, petId);
         postAction(ROUTE_PATH + '/menu/click', { owner, label: leaf.label, pet: petId }).catch((error: unknown) =>
-          deps.warn('[dsh-pet] 第三方菜单点击上报失败 ' + String(error)),
+          deps.warn('[dsh-xiaojing] 第三方菜单点击上报失败 ' + String(error)),
         );
       }
       return;
@@ -135,19 +135,19 @@ export function createMenuActions(deps: MenuActionDeps): MenuActions {
     if (leaf.action === 'sleep' || leaf.action === 'wake') {
       // 睡觉/起来都由宿主定状态：渲染端只发意图，三段动画名与闸门都在宿主那一侧
       const route = leaf.action === 'sleep' ? '/sleep' : '/wake';
-      console.info('[dsh-pet] 菜单' + (leaf.action === 'sleep' ? '睡觉' : '起来') + ' pet=' + petId);
+      console.info('[dsh-xiaojing] 菜单' + (leaf.action === 'sleep' ? '睡觉' : '起来') + ' pet=' + petId);
       fireAction(ROUTE_PATH + route + '?pet=' + encodeURIComponent(petId), leaf.action === 'sleep' ? '睡觉' : '起来');
       return;
     }
     if (leaf.action === 'show-balance') {
       // 动作端点让宿主刷新并写入 /state，页面什么都不用做。
-      console.info('[dsh-pet] 菜单查看余额 pet=' + petId);
+      console.info('[dsh-xiaojing] 菜单查看余额 pet=' + petId);
       fireAction(ROUTE_PATH + '/balance', '余额刷新动作');
       return;
     }
     if (leaf.action === 'whisper') {
       // 手动碎碎念：文本随长轮询送达，不受 whisperEnabled 限制；surface 必填，本页面就是网页端。
-      console.info('[dsh-pet] 菜单触发碎碎念 pet=' + petId + (leaf.image ? ' image=' + leaf.image : ''));
+      console.info('[dsh-xiaojing] 菜单触发碎碎念 pet=' + petId + (leaf.image ? ' image=' + leaf.image : ''));
       // 「配图」菜单点的是具体某张 → 带名称让宿主用这张（不在池内宿主会回 unknown-image）；
       // 其余入口不带，仍按配置随机抽图。名称可能含空格与中文，必须编码。
       const pic = leaf.image ? '&image=' + encodeURIComponent(leaf.image) : '';
@@ -165,7 +165,7 @@ export function createMenuActions(deps: MenuActionDeps): MenuActions {
     if (leaf.action === 'set-display') {
       const display = leaf.display;
       if (!display) return;
-      console.info('[dsh-pet] 菜单切换显示位置 pet=' + petId + ' display=' + display);
+      console.info('[dsh-xiaojing] 菜单切换显示位置 pet=' + petId + ' display=' + display);
       void switchDisplay(deps, display);
       return;
     }

@@ -89,6 +89,6 @@ export function createPetRouter(
       if (result !== undefined) return result;
     }
     // 素材处理器总会给出应答，这条只在新增领域处理器漏掉兜底时才会走到。
-    return { kind: 'text', status: 404, body: 'dsh-pet: not found' };
+    return { kind: 'text', status: 404, body: 'dsh-xiaojing: not found' };
   };
 }

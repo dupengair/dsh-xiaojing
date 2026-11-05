@@ -26,7 +26,7 @@ export function setStateSnapshot(state: PollState): void {
     try {
       listener(state);
     } catch (error) {
-      console.error('[dsh-pet] 状态订阅回调出错（已忽略，不影响轮询）：', error);
+      console.error('[dsh-xiaojing] 状态订阅回调出错（已忽略，不影响轮询）：', error);
     }
   }
 }

@@ -74,7 +74,7 @@ const warnedKeys = new Set<string>();
 export function warnOnce(key: string, message: string): void {
   if (warnedKeys.has(key)) return;
   warnedKeys.add(key);
-  defaultLog('warn', 'dsh-pet: ' + message);
+  defaultLog('warn', 'dsh-xiaojing: ' + message);
 }
 
 /** 配置路径集（宿主组装好后传入，单一事实来源） */

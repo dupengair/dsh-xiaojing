@@ -41,7 +41,7 @@ export async function runNotificationTest(deps: NotificationTestDeps): Promise<v
   try {
     // 绕过聚焦门直接发一条测试通知；点击行为与真实事件通知共用 wireNotificationClick。
     wireNotificationClick(
-      new Notification('测试通知', { body: '【dsh-pet】系统通知已就绪。', icon: NOTIFY_ICONS.test }),
+      new Notification('测试通知', { body: '【小鲸桌宠】系统通知已就绪。', icon: NOTIFY_ICONS.test }),
     );
   } catch {
     /* 个别环境构造失败：仍按已授权提示。 */

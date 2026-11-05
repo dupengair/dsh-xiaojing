@@ -96,7 +96,7 @@ export async function generateWhisper(
     if (i + 1 < candidates.length) {
       defaultLog(
         'warn',
-        `dsh-pet: 碎碎念用 ${modelLabel(sel)} 生成失败（${result.message ?? result.reason}），回落到 ${modelLabel(candidates[i + 1])}`,
+        `dsh-xiaojing: 碎碎念用 ${modelLabel(sel)} 生成失败（${result.message ?? result.reason}），回落到 ${modelLabel(candidates[i + 1])}`,
       );
     }
   }

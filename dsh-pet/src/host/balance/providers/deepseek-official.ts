@@ -21,7 +21,7 @@ export const deepseekOfficial: BalanceProvider = {
     const body: unknown = await res.json();
     const infos = (body as { balance_infos?: unknown })?.balance_infos;
     if (!Array.isArray(infos) || infos.length === 0)
-      throw new Error('dsh-pet: deepseek balance 响应缺少 balance_infos');
+      throw new Error('dsh-xiaojing: deepseek balance 响应缺少 balance_infos');
     const wallets = infos.map((raw) => {
       const w = obj(raw) ?? {};
       const currency = str(w.currency, 'currency');

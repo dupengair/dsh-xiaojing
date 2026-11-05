@@ -4,7 +4,7 @@
 import type { Key } from './zh.ts';
 
 export const ja: Record<Key, string> = {
-  nav: 'デスクトップペット設定',
+  nav: '小鯨（シャオジン）ペット',
   intro: '複数のペットを管理できます。ペットごとにサイズと位置を個別に設定できます（保存するとすぐに反映されます）。',
   // 卡片标题与卡片级说明；说明统一进问号气泡。
   petCardTitle: 'ペットの設定',
@@ -282,5 +282,5 @@ export const ja: Record<Key, string> = {
   'motion.turn': '方向転換',
   'motion.move': '移動',
   'motion.action': 'ランダムアクション',
-  uninstallCmd: 'dsh plugin --profile {profile} remove dsh-pet',
+  uninstallCmd: 'dsh plugin --profile {profile} remove dsh-xiaojing',
 };

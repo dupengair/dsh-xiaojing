@@ -45,7 +45,7 @@ export function saveUserConfig(
     // 显示名：可重复不校验唯一；缺失/留空/非字符串 → 按该宠物 id 处理（兼容旧配置）并告警
     let name = typeof pp.name === 'string' ? pp.name.trim() : '';
     if (!name) {
-      defaultLog('warn', `dsh-pet: pet「${id}」缺少 name，已按默认 ${id}（宠物 id）处理`);
+      defaultLog('warn', `dsh-xiaojing: pet「${id}」缺少 name，已按默认 ${id}（宠物 id）处理`);
       name = id;
     }
     const balanceEnabled = pp.balanceEnabled;

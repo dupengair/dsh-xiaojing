@@ -72,7 +72,7 @@ export async function handleChatRoutes(deps: PetRouteDeps, input: RouteInput): P
         // 按空历史处理并记一行日志，不因为一条坏数据让整个历史接口报错。
         const list = Array.isArray(rawMessages) ? rawMessages.filter((m) => m && typeof m.content === 'string') : [];
         if (rawMessages !== undefined && !Array.isArray(rawMessages)) {
-          log.error(`[dsh-pet] 记忆结构异常（messages 不是数组）pet=${petId}，按空历史处理：${memoryPath}`);
+          log.error(`[dsh-xiaojing] 记忆结构异常（messages 不是数组）pet=${petId}，按空历史处理：${memoryPath}`);
         }
         // 传了 ?rounds= 就用传的（含 0 = 空历史），没传才回落到配置
         const rounds = roundsOverride ?? memoryRounds(who.conf);

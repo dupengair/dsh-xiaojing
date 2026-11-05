@@ -112,7 +112,7 @@ export function createSessionPrompt(deps: SessionPromptDeps): {
 
     const controller = service('sessionController') as Partial<PromptController> | undefined;
     if (typeof controller?.prompt !== 'function') {
-      log(`[dsh-pet] 绑定会话不可用（缺少 sessionController）pet=${petId}`);
+      log(`[dsh-xiaojing] 绑定会话不可用（缺少 sessionController）pet=${petId}`);
       return undefined;
     }
 
@@ -130,7 +130,7 @@ export function createSessionPrompt(deps: SessionPromptDeps): {
         AbortSignal.timeout(PROMPT_TIMEOUT_MS),
       );
     } catch (e) {
-      log(`[dsh-pet] 投递会话消息失败 pet=${petId} session=${sessionId}：${e instanceof Error ? e.message : String(e)}`);
+      log(`[dsh-xiaojing] 投递会话消息失败 pet=${petId} session=${sessionId}：${e instanceof Error ? e.message : String(e)}`);
       // 撤掉刚挂的等待：不撤的话它会空等到超时，还会被下一回合的 assistant 文本误认领。
       finish(sessionId, turn, undefined);
       return undefined;

@@ -39,7 +39,7 @@ export function registerChatCommand(deps: CommandChatInput): void {
           const text = rawInput.trim();
           if (!text) {
             void publishWhisper(petId).catch((e: unknown) =>
-              log.warn('[dsh-pet] 碎碎念异常：' + (e instanceof Error ? e.message : String(e))),
+              log.warn('[dsh-xiaojing] 碎碎念异常：' + (e instanceof Error ? e.message : String(e))),
             );
             return { kind: 'success', text: '已让桌宠碎碎念一句' };
           }
@@ -47,15 +47,15 @@ export function registerChatCommand(deps: CommandChatInput): void {
           void chatWithPet(petId, text)
             .then((r) => {
               if (!r.ok) {
-                log.warn('[dsh-pet] 对话失败 reason=' + r.reason + (r.message ? ' ' + r.message : ''));
+                log.warn('[dsh-xiaojing] 对话失败 reason=' + r.reason + (r.message ? ' ' + r.message : ''));
               }
             })
             // 生成链自己会把业务失败变成 ok:false，走到这里的是真异常（写盘/读配置抛）：
             // 不接住就是 unhandled rejection，Node 默认终止宿主进程。
-            .catch((e: unknown) => log.warn('[dsh-pet] 对话异常：' + (e instanceof Error ? e.message : String(e))));
+            .catch((e: unknown) => log.warn('[dsh-xiaojing] 对话异常：' + (e instanceof Error ? e.message : String(e))));
           return { kind: 'success', text: '已发送，桌宠马上回应' };
         },
       }),
-    'dsh-pet: /chat command',
+    'dsh-xiaojing: /chat command',
   );
 }

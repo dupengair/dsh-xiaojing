@@ -4,7 +4,7 @@
 import type { Key } from './zh.ts';
 
 export const de: Record<Key, string> = {
-  nav: 'Desktop-Pet-Konfiguration',
+  nav: 'Xiaojing-Pet',
   intro: 'Mehrere Pets verwalten: Jedes Pet hat eigene Größe und Position (gilt sofort nach dem Speichern).',
   // 卡片标题与卡片级说明；说明统一进问号气泡。
   petCardTitle: 'Pet-Konfiguration',
@@ -285,5 +285,5 @@ export const de: Record<Key, string> = {
   'motion.turn': 'Drehen',
   'motion.move': 'Bewegen',
   'motion.action': 'Zufallsaktion',
-  uninstallCmd: 'dsh plugin --profile {profile} remove dsh-pet',
+  uninstallCmd: 'dsh plugin --profile {profile} remove dsh-xiaojing',
 };

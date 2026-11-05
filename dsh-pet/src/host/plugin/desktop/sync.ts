@@ -46,7 +46,7 @@ export function createDesktopSync(deps: DesktopSyncInput) {
         startHelper();
       })
       .catch((e: unknown) => {
-        log.warn(`[dsh-pet] 重启桌面 Helper 失败：${e instanceof Error ? e.message : String(e)}`);
+        log.warn(`[dsh-xiaojing] 重启桌面 Helper 失败：${e instanceof Error ? e.message : String(e)}`);
       });
     return desktopSyncQueue;
   };

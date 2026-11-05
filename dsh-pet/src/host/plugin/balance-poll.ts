@@ -73,7 +73,7 @@ export function createBalancePoll(deps: BalancePollInput) {
    */
   const refreshBalance = async (manual = false): Promise<void> => {
     // 开始 + 结果各一行：否则 logs.txt 里既看不出「有没有查」，也看不出「查了但余额没变」。
-    log.info(`[dsh-pet] 余额刷新开始（${manual ? '手动' : '周期'}）`);
+    log.info(`[dsh-xiaojing] 余额刷新开始（${manual ? '手动' : '周期'}）`);
     const mark = <T>(v: T): T | (T & { manual: true }) => (manual ? { ...v, manual: true } : v);
     try {
       // 独立模式自己选余额服务商、自己持密钥：它的 provider 不是聊天用的那个，
@@ -100,10 +100,10 @@ export function createBalancePoll(deps: BalancePollInput) {
       // 失败也写 S（前端弹文字说明），日志同样留一条：否则「查了、失败了」与「根本没查」
       // 在文件里长得一模一样。成功用 info，失败用 warn（亮度不同，扫一眼就能分辨）。
       if (result.ok) {
-        log.info(`[dsh-pet] 余额刷新成功 provider=${result.provider}（${result.shape}）`);
+        log.info(`[dsh-xiaojing] 余额刷新成功 provider=${result.provider}（${result.shape}）`);
       } else {
         log.warn(
-          `[dsh-pet] 余额刷新失败 provider=${result.provider} reason=${result.reason}` +
+          `[dsh-xiaojing] 余额刷新失败 provider=${result.provider} reason=${result.reason}` +
             (result.message ? ' ' + result.message : ''),
         );
       }
@@ -118,7 +118,7 @@ export function createBalancePoll(deps: BalancePollInput) {
           message,
         }),
       );
-      log.warn('[dsh-pet] 余额刷新异常：' + message);
+      log.warn('[dsh-xiaojing] 余额刷新异常：' + message);
     }
   };
 

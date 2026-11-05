@@ -70,7 +70,7 @@ export function createChatMemory(deps: ChatMemoryInput) {
       return parsed as Record<string, Record<string, { messages: ChatMemoryMessage[] }>>;
     } catch (e) {
       log.error(
-        `dsh-pet: 记忆文件无法解析（对话将从头开始）：${memoryPath}（${e instanceof Error ? e.message : String(e)}）`,
+        `dsh-xiaojing: 记忆文件无法解析（对话将从头开始）：${memoryPath}（${e instanceof Error ? e.message : String(e)}）`,
       );
       return {};
     }
@@ -165,7 +165,7 @@ export function createChatMemory(deps: ChatMemoryInput) {
     if (!result.ok) {
       // 失败不写 S：静默跳过 + warn，不伪造文案、不弹错误气泡
       log.warn(
-        '[dsh-pet] 碎碎念生成失败 pet=' +
+        '[dsh-xiaojing] 碎碎念生成失败 pet=' +
           petId +
           ' reason=' +
           result.reason +
@@ -182,7 +182,7 @@ export function createChatMemory(deps: ChatMemoryInput) {
     });
     // 成功也留一行：否则 logs.txt 里「没触发」与「触发了并且成功」无法区分。
     log.info(
-      `[dsh-pet] 碎碎念生成成功 pet=${petId}，${result.text.length} 字` +
+      `[dsh-xiaojing] 碎碎念生成成功 pet=${petId}，${result.text.length} 字` +
         (result.image ? `，配图=${result.image}` : ''),
     );
     // 文本随返回值带出，且与刚写进叶子的是同一个变量：两条出口给同一份文本，不是一个真相两个版本
@@ -204,7 +204,7 @@ export function createChatMemory(deps: ChatMemoryInput) {
     });
     if (!result.ok) {
       log.warn(
-        '[dsh-pet] 梦话生成失败 pet=' +
+        '[dsh-xiaojing] 梦话生成失败 pet=' +
           petId +
           ' reason=' +
           result.reason +
@@ -213,7 +213,7 @@ export function createChatMemory(deps: ChatMemoryInput) {
       return false;
     }
     state.writePet(petId, 'say', { text: result.text, anim: false });
-    log.info(`[dsh-pet] 梦话生成成功 pet=${petId}，${result.text.length} 字`);
+    log.info(`[dsh-xiaojing] 梦话生成成功 pet=${petId}，${result.text.length} 字`);
     return true;
   };
 
@@ -248,7 +248,7 @@ export function createChatMemory(deps: ChatMemoryInput) {
       // 图片只记尺寸与字节数（不记 base64）：模型不支持读图时 dsh-llm 会把它投影成占位文本，靠这行日志定位
       if (image !== undefined) {
         log.info(
-          `[dsh-pet] 对话附带图片 pet=${petId}，${image.width}x${image.height}，${image.bytes} 字节` +
+          `[dsh-xiaojing] 对话附带图片 pet=${petId}，${image.width}x${image.height}，${image.bytes} 字节` +
             '（模型不支持读图时内核会以占位文本代替）',
         );
       }
@@ -317,7 +317,7 @@ export function createChatMemory(deps: ChatMemoryInput) {
         await writeMemory(mem);
       }
       // 只记数量与动作，不打正文（记忆内容是用户隐私）
-      log.info(`[dsh-pet] 删除对话记忆 pet=${petId}，removed=${removed}` + (ts === undefined ? '（清空）' : ''));
+      log.info(`[dsh-xiaojing] 删除对话记忆 pet=${petId}，removed=${removed}` + (ts === undefined ? '（清空）' : ''));
       return { ok: true as const, removed };
     });
 

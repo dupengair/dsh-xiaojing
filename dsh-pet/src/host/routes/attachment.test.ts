@@ -90,7 +90,7 @@ describe('handleAttachmentRoutes —— 取图端点', () => {
       },
     } as PetImageSink;
     const res = await handleAttachmentRoutes(makeDeps(throwing), request(ID));
-    assert.equal((res as { kind: 'text'; body: string }).body, 'dsh-pet: attachment not found');
+    assert.equal((res as { kind: 'text'; body: string }).body, 'dsh-xiaojing: attachment not found');
   });
 
   test('对象已被清掉（路径存在但文件不在）→ 404', async () => {

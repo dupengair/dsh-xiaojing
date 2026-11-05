@@ -44,7 +44,7 @@ const stamp = (): string => new Date().toTimeString().slice(0, 8);
 
 /** 一行带时刻与宠物 id 的日志。 */
 const log = (petId: string, message: string): void => {
-  console.log('[dsh-pet] ' + stamp() + ' pet=' + petId + ' ' + message);
+  console.log('[dsh-xiaojing] ' + stamp() + ' pet=' + petId + ' ' + message);
 };
 
 /**
@@ -182,7 +182,7 @@ export function createAnimationFlow(rt: AnimationFlowRuntime) {
       if (anim !== false && !sleeping()) {
         const pool = hub.anims().events?.whisper;
         if (!pool || pool.length === 0) {
-          console.error('[dsh-pet] 配置缺少 animations.events.whisper，无法播放碎碎念动画');
+          console.error('[dsh-xiaojing] 配置缺少 animations.events.whisper，无法播放碎碎念动画');
           return;
         }
         // 整池随机抽 1 槽并避开当前正播动画；槽位为数组时再在档内随机。

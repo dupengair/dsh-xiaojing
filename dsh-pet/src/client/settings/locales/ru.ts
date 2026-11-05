@@ -4,7 +4,7 @@
 import type { Key } from './zh.ts';
 
 export const ru: Record<Key, string> = {
-  nav: 'Настройки питомца',
+  nav: 'Питомец Xiaojing',
   intro: 'Управляйте несколькими питомцами: у каждого свои размер и позиция (применяются сразу после сохранения).',
   // 卡片标题与卡片级说明；说明统一进问号气泡。
   petCardTitle: 'Питомец',
@@ -286,5 +286,5 @@ export const ru: Record<Key, string> = {
   'motion.turn': 'Поворот',
   'motion.move': 'Движение',
   'motion.action': 'Случайное действие',
-  uninstallCmd: 'dsh plugin --profile {profile} remove dsh-pet',
+  uninstallCmd: 'dsh plugin --profile {profile} remove dsh-xiaojing',
 };

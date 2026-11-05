@@ -170,7 +170,7 @@ export function createCardEntry(rt: CardEntryRuntime) {
         capture: captureDisplayFrame,
         onSent: () => {
           // 发送成功：回复已写进 /state，长轮询会立刻返回并弹气泡。
-          console.info('[dsh-pet] 对话已发送 pet=' + cfgRef.current.id);
+          console.info('[dsh-xiaojing] 对话已发送 pet=' + cfgRef.current.id);
         },
         onClose: () => {
           chatRef.current = null;

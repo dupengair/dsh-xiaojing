@@ -110,7 +110,7 @@ export async function tickTodoReminders(deps: TodoReminderTickDeps): Promise<voi
   await deps.todos.markReminded(due.todo.id, now);
   // 只记 id 与剩余时长：待办正文是用户内容，不进日志。
   const remainingSec = due.todo.dueAt === null ? 0 : Math.round((due.todo.dueAt - now) / 1000);
-  deps.log.info(`[dsh-pet] 待办提醒 todo=${due.todo.id} pet=${speaker} 剩余=${remainingSec}s`);
+  deps.log.info(`[dsh-xiaojing] 待办提醒 todo=${due.todo.id} pet=${speaker} 剩余=${remainingSec}s`);
 }
 
 /**
@@ -135,7 +135,7 @@ export function registerTodoReminders(deps: TodoReminderInput): void {
         todos,
       });
     } catch (error) {
-      log.warn('[dsh-pet] 待办提醒失败：' + (error instanceof Error ? error.message : String(error)));
+      log.warn('[dsh-xiaojing] 待办提醒失败：' + (error instanceof Error ? error.message : String(error)));
     }
   };
 
@@ -161,5 +161,5 @@ export function registerTodoReminders(deps: TodoReminderInput): void {
       disposed = true;
       if (timer !== null) clearTimeout(timer);
     };
-  }, 'dsh-pet: todo reminders');
+  }, 'dsh-xiaojing: todo reminders');
 }

@@ -74,14 +74,14 @@ export function registerLoops(deps: LoopsInput): void {
         if (pets.some((p) => p.balanceEnabled === true && !sleep.sleeping(String(p.id ?? '')))) {
           await refreshBalance();
         } else {
-          log.info('[dsh-pet] 余额周期跳过：没有醒着且启用余额的宠物');
+          log.info('[dsh-xiaojing] 余额周期跳过：没有醒着且启用余额的宠物');
         }
       } catch (e) {
         // 读配置抛错 = 安装损坏（readAllConfig 只在内置默认缺失/损坏时抛，用户层写坏只会告警回退）：
         // 不再重排——每 30 分钟重试一次没有意义，而且会白占一个常驻定时器。留一行 warn：这条路径
         // 会让余额周期永久停摆，不打日志就与「查了但没变化」无法区分。
         log.warn(
-          '[dsh-pet] 余额周期读配置失败，周期刷新已停止（重启 DSH 后恢复）：' +
+          '[dsh-xiaojing] 余额周期读配置失败，周期刷新已停止（重启 DSH 后恢复）：' +
             (e instanceof Error ? e.message : String(e)),
         );
         return;
@@ -93,7 +93,7 @@ export function registerLoops(deps: LoopsInput): void {
       disposed = true;
       if (timer !== null) clearTimeout(timer);
     };
-  }, 'dsh-pet: balance poll');
+  }, 'dsh-xiaojing: balance poll');
 
   // 碎碎念周期：host 侧调度。一拍 = 读一次配置 + 把「到点」的宠物排进错峰队列；下一拍按最短周期排。
   // 用固定拍 + 逐宠物比对 lastWhisperAt，而不是每宠一个定时器：宠物随配置增删、周期随条目改，
@@ -203,14 +203,14 @@ export function registerLoops(deps: LoopsInput): void {
           due += 1;
           // 在调度时记：排队不改变周期语义，单只仍然每 sec 秒一句。
           lastWhisperAt.set(petId, now);
-          log.info(`[dsh-pet] 碎碎念到点 pet=${petId}（周期 ${sec}s），入队待发`);
+          log.info(`[dsh-xiaojing] 碎碎念到点 pet=${petId}（周期 ${sec}s），入队待发`);
           pending.push(petId);
         }
         void pump(); // 本拍到点的宠物开始逐只发布
         if (Number.isFinite(min)) next = min;
         // 每拍一行汇总：调度是否还在跑、下一拍多久、为什么跳过，全在这一行里（300s 一条，量可忽略）
         log.info(
-          `[dsh-pet] 碎碎念调度：检查 ${checked} 只 → 到点 ${due}、未到点 ${notDue}、跳过 ${skipped.length}` +
+          `[dsh-xiaojing] 碎碎念调度：检查 ${checked} 只 → 到点 ${due}、未到点 ${notDue}、跳过 ${skipped.length}` +
             (due > 1 ? `；${due} 只按 ${WHISPER_STAGGER_MS / 1000}s 间隔依次说` : '') +
             (skipped.length > 0 ? `（${skipped.join('；')}）` : '') +
             `；下一拍 ${next}s`,
@@ -219,7 +219,7 @@ export function registerLoops(deps: LoopsInput): void {
         // 读配置抛错 = 安装损坏（同余额定时器）：不再重排，别白占常驻句柄。
         // 但必须留一行 warn：这条路径会让自动碎碎念永久停摆。
         log.warn(
-          '[dsh-pet] 碎碎念调度读配置失败，自动碎碎念已停止（重启 DSH 后恢复）：' +
+          '[dsh-xiaojing] 碎碎念调度读配置失败，自动碎碎念已停止（重启 DSH 后恢复）：' +
             (e instanceof Error ? e.message : String(e)),
         );
         return;
@@ -232,7 +232,7 @@ export function registerLoops(deps: LoopsInput): void {
       if (timer !== null) clearTimeout(timer);
       if (drainTimer !== null) clearTimeout(drainTimer);
     };
-  }, 'dsh-pet: whisper poll');
+  }, 'dsh-xiaojing: whisper poll');
 
   // 梦话周期：只对正在睡的宠物，按各自条目的 eventsRefreshSec.sleepTalk 排。
   // 与碎碎念同一个形态（固定拍 + 逐宠物比对 lastAt），宠物增删与周期改动天然跟上。
@@ -265,7 +265,7 @@ export function registerLoops(deps: LoopsInput): void {
       } catch (e) {
         // 读配置抛错 = 安装损坏：停止本循环并留一行日志（与另外两个循环同一口径）
         log.warn(
-          '[dsh-pet] 梦话调度读配置失败，说梦话已停止（重启 DSH 后恢复）：' +
+          '[dsh-xiaojing] 梦话调度读配置失败，说梦话已停止（重启 DSH 后恢复）：' +
             (e instanceof Error ? e.message : String(e)),
         );
         return;
@@ -277,7 +277,7 @@ export function registerLoops(deps: LoopsInput): void {
       disposed = true;
       if (timer !== null) clearTimeout(timer);
     };
-  }, 'dsh-pet: sleep talk poll');
+  }, 'dsh-xiaojing: sleep talk poll');
 }
 
 /** 梦话周期（秒）：条目级 eventsRefreshSec.sleepTalk，读不到按 60 兜底（与配置注释同一口径）。 */

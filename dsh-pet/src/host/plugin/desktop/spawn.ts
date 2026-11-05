@@ -84,10 +84,10 @@ export function createDesktopSpawn(deps: DesktopSpawnInput) {
       // 「连尝试都没有」且没有任何线索。这里只加可见性，重试节奏与次数保持原样。
       portWaitAttempts += 1;
       if (portWaitAttempts === 1) {
-        log.info(`[dsh-pet] webServer 端口尚未就绪（port=${String(port)}），每 500ms 重试拉起桌面 Helper`);
+        log.info(`[dsh-xiaojing] webServer 端口尚未就绪（port=${String(port)}），每 500ms 重试拉起桌面 Helper`);
       } else if (portWaitAttempts % 20 === 0) {
         log.warn(
-          `[dsh-pet] 已等待 webServer 端口 ${(portWaitAttempts * 500) / 1000}s 仍未就绪` +
+          `[dsh-xiaojing] 已等待 webServer 端口 ${(portWaitAttempts * 500) / 1000}s 仍未就绪` +
             `（port=${String(port)}），桌面 Helper 尚未拉起`,
         );
       }
@@ -147,9 +147,9 @@ export function createDesktopSpawn(deps: DesktopSpawnInput) {
     try {
       helper.start();
       desktopModeEverActive = true; // 此后即使桌面宠物清零也保留 Helper：托盘常驻，可随时切回来
-      log.info(`dsh-pet desktop helper started (config: ${configUrl})`);
+      log.info(`dsh-xiaojing desktop helper started (config: ${configUrl})`);
     } catch (e) {
-      log.warn(`dsh-pet desktop helper start failed: ${e instanceof Error ? e.message : String(e)}`);
+      log.warn(`dsh-xiaojing desktop helper start failed: ${e instanceof Error ? e.message : String(e)}`);
       helper = undefined;
     }
   };
@@ -164,7 +164,7 @@ export function createDesktopSpawn(deps: DesktopSpawnInput) {
       if (!noDesktopSkipped) {
         noDesktopSkipped = true;
         log.info(
-          `[dsh-pet] 无桌面宠物（display 均为 web/none）且无需保留托盘（tray=${getTrayOn()}），已跳过桌面 Helper 启动`,
+          `[dsh-xiaojing] 无桌面宠物（display 均为 web/none）且无需保留托盘（tray=${getTrayOn()}），已跳过桌面 Helper 启动`,
         );
       }
       return;
@@ -175,7 +175,7 @@ export function createDesktopSpawn(deps: DesktopSpawnInput) {
       if (!displayWarned) {
         displayWarned = true;
         log.warn(
-          '[dsh-pet] 未检测到图形显示环境（DISPLAY/WAYLAND_DISPLAY 均为空），已跳过桌面宠物。' +
+          '[dsh-xiaojing] 未检测到图形显示环境（DISPLAY/WAYLAND_DISPLAY 均为空），已跳过桌面宠物。' +
             '浏览器内宠物不受影响；如需在服务器上启用桌面模式，请配置 Xvfb 后设置 DSH_PET_DESKTOP_FORCE=1。',
         );
       }
@@ -189,10 +189,10 @@ export function createDesktopSpawn(deps: DesktopSpawnInput) {
     // 诊断日志（issue #168）：只报「没找到」不够用——最常见的情形是「文件明明存在」，
     // 但不在实际查询的路径上（DSH_HOME 不一致）。把真正查的路径一起打出来。
     log.warn(
-      `[dsh-pet] 未找到 Electron 可执行文件：DSH_HOME=${dshHomeDir()}，查找路径=${defaultElectronExe()}` +
+      `[dsh-xiaojing] 未找到 Electron 可执行文件：DSH_HOME=${dshHomeDir()}，查找路径=${defaultElectronExe()}` +
         `，DSH_PET_ELECTRON_PATH=${process.env.DSH_PET_ELECTRON_PATH ?? '(未设置)'}`,
     );
-    log.warn(`[dsh-pet] 开始下载 Electron 到 ${defaultElectronExe()} ...`);
+    log.warn(`[dsh-xiaojing] 开始下载 Electron 到 ${defaultElectronExe()} ...`);
     electronEnsure = ensureElectronDownload({
       // 下载全过程写进工作状态气泡（用户没有控制台，只能靠它看进度与失败原因）
       onLog: ({ text, level, done }) =>
@@ -205,7 +205,7 @@ export function createDesktopSpawn(deps: DesktopSpawnInput) {
           launchHelper(path);
         } else {
           log.warn(
-            '[dsh-pet] Electron download failed; desktop pet unavailable. Set DSH_PET_ELECTRON_PATH and restart, or retry later.',
+            '[dsh-xiaojing] Electron download failed; desktop pet unavailable. Set DSH_PET_ELECTRON_PATH and restart, or retry later.',
           );
         }
       })

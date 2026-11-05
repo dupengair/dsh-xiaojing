@@ -36,6 +36,6 @@ export function registerBalanceCommand(deps: CommandBalanceInput): void {
           return { kind: 'success', text: '已触发桌宠余额显示' };
         },
       }),
-    'dsh-pet: /balance command',
+    'dsh-xiaojing: /balance command',
   );
 }

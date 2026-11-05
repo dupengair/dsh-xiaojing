@@ -15,9 +15,9 @@ declare const window: {
 };
 
 // 加载标记：排查「客户端半侧是否跑到新代码」用（发布前可留，一条日志无碍）。
-console.log('[dsh-pet] client loaded: session-binding build');
+console.log('[dsh-xiaojing] client loaded: session-binding build');
 
 window.__ModuleLoader__.load({
-  id: 'dsh-pet',
+  id: 'dsh-xiaojing',
   factory: makeFactory(),
 });

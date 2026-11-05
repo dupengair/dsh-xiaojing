@@ -21,13 +21,13 @@ Object.assign(PetSprite.prototype, {
       }
       this.applyFreeze(false);
       S.postAction(BASE + '/lock/release?pet=' + encodeURIComponent(this.pet.id), { force: true }).then((ok) => {
-        if (!ok) console.warn('[dsh-pet] 用户接管上报未送达 pet=' + this.pet.id);
+        if (!ok) console.warn('[dsh-xiaojing] 用户接管上报未送达 pet=' + this.pet.id);
       });
     }
     // 抓取速度日志：stopThrow 之前读，否则飞行速度就没了；静止时记录 0
     const grabState = this.throwState;
     console.log(
-      '[dsh-pet] ' +
+      '[dsh-xiaojing] ' +
         new Date().toTimeString().slice(0, 8) +
         ' pet=' +
         this.pet.id +
@@ -47,7 +47,7 @@ Object.assign(PetSprite.prototype, {
       if (grabSpeed >= S.SCORE_MIN_SPEED) {
         this.pressScoreFired = true;
         console.log(
-          '[dsh-pet] ' +
+          '[dsh-xiaojing] ' +
             new Date().toTimeString().slice(0, 8) +
             ' pet=' +
             this.pet.id +
@@ -187,7 +187,7 @@ Object.assign(PetSprite.prototype, {
         const v = S.slingshotVelocity(S.pullAngle(pullX, pullY), rawPower, this.physics.throwPower);
         this.dragTrail = [];
         console.log(
-          '[dsh-pet] ' +
+          '[dsh-xiaojing] ' +
             new Date().toTimeString().slice(0, 8) +
             ' pet=' +
             this.pet.id +
@@ -207,7 +207,7 @@ Object.assign(PetSprite.prototype, {
         this.dragTrail = [];
         if (vel) {
           console.log(
-            '[dsh-pet] ' +
+            '[dsh-xiaojing] ' +
               new Date().toTimeString().slice(0, 8) +
               ' pet=' +
               this.pet.id +
