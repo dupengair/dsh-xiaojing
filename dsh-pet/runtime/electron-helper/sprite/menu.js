@@ -219,7 +219,11 @@ Object.assign(PetSprite.prototype, {
       this.applyDshSessionPick({ sessionId: leaf.sessionId, title: leaf.label.replace(/\s*✓$/u, '') });
       return;
     }
-    if (this.dshSessionMenu && typeof this.dshSessionMenu.picks.has === 'function' && this.dshSessionMenu.picks.has(leaf)) {
+    if (
+      this.dshSessionMenu &&
+      typeof this.dshSessionMenu.picks.has === 'function' &&
+      this.dshSessionMenu.picks.has(leaf)
+    ) {
       this.applyDshSessionPick(this.dshSessionMenu.picks.get(leaf));
       return;
     }
@@ -326,7 +330,9 @@ Object.assign(PetSprite.prototype, {
     S.postAction(WHISPER_URL + '?pet=' + encodeURIComponent(this.pet.id) + '&surface=desktop' + pic)
       .then((ok) => {
         if (!ok)
-          console.warn('[dsh-xiaojing] 菜单碎碎念：生成动作未成功 pet=' + this.pet.id + (image ? ' image=' + image : ''));
+          console.warn(
+            '[dsh-xiaojing] 菜单碎碎念：生成动作未成功 pet=' + this.pet.id + (image ? ' image=' + image : ''),
+          );
       })
       .catch((e) => {
         console.warn('[dsh-xiaojing] 菜单碎碎念异常', e);

@@ -133,7 +133,7 @@ export function createSendActions(ports: ActionPorts): {
   };
 }
 
-/** 外壳动作需要的额外句柄。 */export interface ShellDeps {
+/** 外壳动作需要的额外句柄。 */ export interface ShellDeps {
   readonly ports: ActionPorts;
   /** 记忆删除动作（确认后要分发到它们）。 */
   readonly history: { deleteSelected: () => void; clearAll: () => void };

@@ -52,7 +52,9 @@ export function registerChatCommand(deps: CommandChatInput): void {
             })
             // 生成链自己会把业务失败变成 ok:false，走到这里的是真异常（写盘/读配置抛）：
             // 不接住就是 unhandled rejection，Node 默认终止宿主进程。
-            .catch((e: unknown) => log.warn('[dsh-xiaojing] 对话异常：' + (e instanceof Error ? e.message : String(e))));
+            .catch((e: unknown) =>
+              log.warn('[dsh-xiaojing] 对话异常：' + (e instanceof Error ? e.message : String(e))),
+            );
           return { kind: 'success', text: '已发送，桌宠马上回应' };
         },
       }),

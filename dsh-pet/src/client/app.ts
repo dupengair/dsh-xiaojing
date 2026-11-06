@@ -93,7 +93,8 @@ export function makeFactory(): (require: (mod: string) => any) => any {
       };
     } catch (error) {
       console.warn(
-        '[dsh-xiaojing] 图标渲染器不可用（react-dom 缺失）：' + (error instanceof Error ? error.message : String(error)),
+        '[dsh-xiaojing] 图标渲染器不可用（react-dom 缺失）：' +
+          (error instanceof Error ? error.message : String(error)),
       );
     }
 

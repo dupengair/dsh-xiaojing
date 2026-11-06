@@ -364,7 +364,11 @@ export function createCardEntry(rt: CardEntryRuntime) {
       // 「DSH 会话」：打开菜单时读一次会话列表；服务缺失或读取失败整枝不出现。
       // 绑定状态取缓存（挂载时拉一次、每次改绑后回写），菜单不等网络；这里再顺手刷新一次给下次用。
       void ensureSessionBindingLoaded();
-      const sessionMenu = buildSessionMenu(readSessionOptions(), boundSessionId(getCachedBinding()), readWorkspaceInfo());
+      const sessionMenu = buildSessionMenu(
+        readSessionOptions(),
+        boundSessionId(getCachedBinding()),
+        readWorkspaceInfo(),
+      );
       // 子菜单项没有 action（不改 shared 的动作联合类型），点击目标靠叶子对象身份分派。
       const picks = sessionMenu?.picks ?? new Map<MenuLeaf, SessionMenuPick>();
       // 睡觉/起来是同一个入口的两种文案：睡着时点它等于叫醒（与「点击宠物」同义）。

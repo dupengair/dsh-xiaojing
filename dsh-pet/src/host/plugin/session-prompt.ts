@@ -130,7 +130,9 @@ export function createSessionPrompt(deps: SessionPromptDeps): {
         AbortSignal.timeout(PROMPT_TIMEOUT_MS),
       );
     } catch (e) {
-      log(`[dsh-xiaojing] 投递会话消息失败 pet=${petId} session=${sessionId}：${e instanceof Error ? e.message : String(e)}`);
+      log(
+        `[dsh-xiaojing] 投递会话消息失败 pet=${petId} session=${sessionId}：${e instanceof Error ? e.message : String(e)}`,
+      );
       // 撤掉刚挂的等待：不撤的话它会空等到超时，还会被下一回合的 assistant 文本误认领。
       finish(sessionId, turn, undefined);
       return undefined;

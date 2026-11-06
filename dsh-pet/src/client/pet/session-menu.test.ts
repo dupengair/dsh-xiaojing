@@ -120,8 +120,26 @@ describe('buildSessionMenu —— DSH 会话子菜单', () => {
     assert.deepEqual(sessionOptionsFromSnapshot({ byId: 'bad' }), []);
     // 快照行顺带读出分组字段（cwd / updatedAt / parentSessionId / origin / blank / mainView）。
     assert.deepEqual(sessionOptionsFromSnapshot({ byId: { a: { title: '标题' }, b: null } }), [
-      { id: 'a', title: '标题', cwd: undefined, updatedAt: undefined, parentSessionId: undefined, origin: undefined, blank: false, mainView: false },
-      { id: 'b', title: '', cwd: undefined, updatedAt: undefined, parentSessionId: undefined, origin: undefined, blank: false, mainView: false },
+      {
+        id: 'a',
+        title: '标题',
+        cwd: undefined,
+        updatedAt: undefined,
+        parentSessionId: undefined,
+        origin: undefined,
+        blank: false,
+        mainView: false,
+      },
+      {
+        id: 'b',
+        title: '',
+        cwd: undefined,
+        updatedAt: undefined,
+        parentSessionId: undefined,
+        origin: undefined,
+        blank: false,
+        mainView: false,
+      },
     ]);
     assert.deepEqual(
       sessionOptionsFromSnapshot({
@@ -131,8 +149,26 @@ describe('buildSessionMenu —— DSH 会话子菜单', () => {
         },
       }),
       [
-        { id: 'm', title: '主', cwd: 'D:/w', updatedAt: 5, parentSessionId: undefined, origin: 'subagent', blank: true, mainView: true },
-        { id: 'sub', title: '子', cwd: 'D:/w', updatedAt: undefined, parentSessionId: 'm', origin: undefined, blank: true, mainView: false },
+        {
+          id: 'm',
+          title: '主',
+          cwd: 'D:/w',
+          updatedAt: 5,
+          parentSessionId: undefined,
+          origin: 'subagent',
+          blank: true,
+          mainView: true,
+        },
+        {
+          id: 'sub',
+          title: '子',
+          cwd: 'D:/w',
+          updatedAt: undefined,
+          parentSessionId: 'm',
+          origin: undefined,
+          blank: true,
+          mainView: false,
+        },
       ],
     );
   });
@@ -223,7 +259,10 @@ describe('groupSessionsByWorkspace —— 全工作区分组', () => {
     ];
     const groups = groupSessionsByWorkspace(rows, { items: [], archivedSessionIds: [] });
     // 无记账 → 全部可见的进「未分组」；bot 与 newBlank 被滤。
-    assert.deepEqual(groups[0]?.rows.map((r) => r.id), ['heldBlank', 'main']);
+    assert.deepEqual(
+      groups[0]?.rows.map((r) => r.id),
+      ['heldBlank', 'main'],
+    );
     // 服务不可用的启发式分支同样滤 blank / subagent。
     assert.deepEqual(
       groupSessionsByWorkspace(rows, undefined)[0]?.rows.map((r) => r.id),
@@ -280,7 +319,10 @@ describe('groupSessionsByWorkspace —— 全工作区分组', () => {
       { id: 'a', title: 'A', cwd: 'D:/w' },
       { id: 's1', title: '子1', cwd: 'D:/w', parentSessionId: 'a' },
     ];
-    assert.deepEqual(groupSessionsByWorkspace(rows)[0]?.rows.map((r) => r.id), ['a']);
+    assert.deepEqual(
+      groupSessionsByWorkspace(rows)[0]?.rows.map((r) => r.id),
+      ['a'],
+    );
     assert.deepEqual(
       groupSessionsByWorkspace(rows, { items: [], archivedSessionIds: [] })[0]?.rows.map((r) => r.id),
       ['a'],
@@ -292,18 +334,15 @@ describe('groupSessionsByWorkspace —— 全工作区分组', () => {
       { id: 'a', title: 'A', cwd: 'D:/w' },
       { id: 's', title: '子', parentSessionId: 'a' },
     ];
-    assert.deepEqual(
-      groupSessionsByWorkspace(rows, { items: [], archivedSessionIds: ['a'] }),
-      [],
-    );
+    assert.deepEqual(groupSessionsByWorkspace(rows, { items: [], archivedSessionIds: ['a'] }), []);
     assert.equal(buildSessionMenu(rows, '', { items: [], archivedSessionIds: ['a'] }), null);
   });
 });
 
 describe('sessionTitle / 叶子 sessionId —— 标题兜底与点击分发', () => {
   test('空标题回落：去掉 session- 前缀后取前 8 位', () => {
-    assert.equal(sessionTitle({ id: 'session-8d503494-392a-4329-9df3-4ca466331cb3' }), '8d503494');
-    assert.equal(sessionTitle({ id: 'session-11b7077b-9c5a-4f53-9fa7-ce981255043d' }), '11b7077b');
+    assert.equal(sessionTitle({ id: 'session-8d503494-392a-4329-9df3-4ca466331cb3', title: '' }), '8d503494');
+    assert.equal(sessionTitle({ id: 'session-11b7077b-9c5a-4f53-9fa7-ce981255043d', title: '' }), '11b7077b');
     assert.equal(sessionTitle({ id: 'ab12cd34', title: '   ' }), 'ab12cd34');
     assert.equal(sessionTitle({ id: 'session-abc', title: '插件开发' }), '插件开发');
   });
@@ -311,9 +350,12 @@ describe('sessionTitle / 叶子 sessionId —— 标题兜底与点击分发', (
   test('叶子带 sessionId：点击分发不依赖对象身份', () => {
     const menu = buildSessionMenu([{ id: 's1', title: '插件开发', cwd: 'D:/w' }], '');
     assert.ok(menu !== null);
-    const sessionLeaf = menu.branch.children.find((child) => child.label === '插件开发');
-    assert.equal(sessionLeaf?.sessionId, 's1');
-    const unbindLeaf = menu.branch.children.find((child) => child.label === UNBIND_LABEL);
-    assert.equal(unbindLeaf?.sessionId, '');
+    // 单工作区时组被省掉，叶子直接挂在根上；按 label 找出来后只关心 sessionId 字段。
+    const leafOf = (label: string) =>
+      menu.branch.children
+        .map((child) => ('children' in child ? undefined : child))
+        .find((leaf) => leaf?.label === label);
+    assert.equal(leafOf('插件开发')?.sessionId, 's1');
+    assert.equal(leafOf(UNBIND_LABEL)?.sessionId, '');
   });
 });

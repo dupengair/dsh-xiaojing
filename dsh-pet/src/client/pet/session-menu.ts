@@ -86,7 +86,8 @@ export function sessionOptionsFromSnapshot(snapshot: unknown): SessionRow[] {
       title: typeof r.title === 'string' ? r.title : '',
       cwd: typeof r.cwd === 'string' && r.cwd !== '' ? r.cwd : undefined,
       updatedAt: typeof r.updatedAt === 'number' ? r.updatedAt : undefined,
-      parentSessionId: typeof r.parentSessionId === 'string' && r.parentSessionId !== '' ? r.parentSessionId : undefined,
+      parentSessionId:
+        typeof r.parentSessionId === 'string' && r.parentSessionId !== '' ? r.parentSessionId : undefined,
       origin: typeof r.origin === 'string' ? r.origin : undefined,
       blank: r.blank === true,
       mainView: typeof mainView === 'number' && mainView > 0,

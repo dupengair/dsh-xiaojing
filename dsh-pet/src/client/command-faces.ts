@@ -49,7 +49,8 @@ export function installCommandFaces(commandUi: CommandUiLike, faces: ReadonlyMap
       });
     } catch (error) {
       console.warn(
-        '[dsh-xiaojing] 命令图标补丁异常，本次退回原始菜单行：' + (error instanceof Error ? error.message : String(error)),
+        '[dsh-xiaojing] 命令图标补丁异常，本次退回原始菜单行：' +
+          (error instanceof Error ? error.message : String(error)),
       );
       return rows;
     }

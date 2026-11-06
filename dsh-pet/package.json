@@ -14,13 +14,15 @@
     "cordis",
     "react"
   ],
-  "homepage": "https://github.com/PC2005-cloud/dsh-pet#readme",
+  "author": "dupengair",
+  "homepage": "https://github.com/dupengair/dsh-xiaojing#readme",
   "repository": {
     "type": "git",
-    "url": "git+https://github.com/PC2005-cloud/dsh-pet.git"
+    "url": "git+https://github.com/dupengair/dsh-xiaojing.git",
+    "directory": "dsh-pet"
   },
   "bugs": {
-    "url": "https://github.com/PC2005-cloud/dsh-pet/issues"
+    "url": "https://github.com/dupengair/dsh-xiaojing/issues"
   },
   "_comment": [
     "=============== dsh-xiaojing 包清单说明 ===============",

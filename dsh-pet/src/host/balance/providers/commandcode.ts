@@ -72,7 +72,8 @@ export function parseCommandCode(
 
   const summary = obj(summaryBody);
   const spentRaw = summary?.totalCost;
-  if (spentRaw === undefined || spentRaw === null) throw new Error('dsh-xiaojing: commandcode usage 响应缺少 totalCost');
+  if (spentRaw === undefined || spentRaw === null)
+    throw new Error('dsh-xiaojing: commandcode usage 响应缺少 totalCost');
   const spent = Math.max(0, num(spentRaw, 'totalCost'));
 
   const pool = spent + remaining;

@@ -43,7 +43,9 @@ Object.assign(PetSprite.prototype, {
     const loadGuard = (why) => {
       if (!this.pending || this.pending.gen !== gen) return;
       this.pending = null;
-      console.warn('[dsh-xiaojing] 素材加载失败 pet=' + this.pet.id + ' anim=' + next + '：' + why + '（已释放本次切换）');
+      console.warn(
+        '[dsh-xiaojing] 素材加载失败 pet=' + this.pet.id + ' anim=' + next + '：' + why + '（已释放本次切换）',
+      );
       // 播放回执：这一段没能播起来 → 如实回 failed（而不是让调用方干等到 timeout）
       if (playbackId) {
         if (this.playback === playbackId) this.playback = null;
@@ -230,7 +232,8 @@ Object.assign(PetSprite.prototype, {
   postSleepAction(action) {
     const route = action === 'wake' ? '/wake' : '/sleep';
     S.postAction(BASE + route + '?pet=' + encodeURIComponent(this.pet.id)).then((ok) => {
-      if (!ok) console.error('[dsh-xiaojing] ' + (action === 'wake' ? '叫醒' : '进睡') + '请求未成功 pet=' + this.pet.id);
+      if (!ok)
+        console.error('[dsh-xiaojing] ' + (action === 'wake' ? '叫醒' : '进睡') + '请求未成功 pet=' + this.pet.id);
     });
   },
 

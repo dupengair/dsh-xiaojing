@@ -277,7 +277,8 @@ class PetSprite {
     if (!playbackId) return;
     const body = reason ? { status, reason } : { status };
     void S.postAction(BASE + '/playback/' + encodeURIComponent(playbackId) + '/report', body).then((ok) => {
-      if (!ok) console.warn('[dsh-xiaojing] 播放回执未送达 pet=' + this.pet.id + ' id=' + playbackId + ' status=' + status);
+      if (!ok)
+        console.warn('[dsh-xiaojing] 播放回执未送达 pet=' + this.pet.id + ' id=' + playbackId + ' status=' + status);
     });
   }
 

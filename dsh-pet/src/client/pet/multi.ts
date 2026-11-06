@@ -93,7 +93,9 @@ export function createPetMulti(
       if (show) setBalanceNoticeTick((t) => t + 1); // 弹文字说明气泡（不播动画）
       // 未登记服务商是配置事实，已由气泡说明；其余原因照旧显式报错。
       if (state.reason !== 'unsupported') {
-        console.error('[dsh-xiaojing] 余额查询失败 reason=' + state.reason + (state.message ? ' ' + state.message : ''));
+        console.error(
+          '[dsh-xiaojing] 余额查询失败 reason=' + state.reason + (state.message ? ' ' + state.message : ''),
+        );
       }
     };
     // 工作状态：容器统一轮询 sections.workStatus，快照与 tick 驱动各宠物播档位动画。

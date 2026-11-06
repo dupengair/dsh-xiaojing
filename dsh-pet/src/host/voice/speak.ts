@@ -186,7 +186,9 @@ export function createVoiceService(options: {
       );
       return dropped();
     }
-    log?.info?.(`[dsh-xiaojing] voice speak: cache=miss chars=${text.length} voice=${source} ms=${Date.now() - startedMs}`);
+    log?.info?.(
+      `[dsh-xiaojing] voice speak: cache=miss chars=${text.length} voice=${source} ms=${Date.now() - startedMs}`,
+    );
     return { ok: true, file: target };
   }
 

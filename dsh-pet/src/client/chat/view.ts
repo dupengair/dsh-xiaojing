@@ -137,7 +137,12 @@ function sessionListNode(rt: ChatPanelRuntime, state: ChatPanelState): unknown {
           rt.h('div', {
             key: message.ts + '-' + index,
             className: 'pet-chat-msg ' + (message.role === 'user' ? 'is-me' : 'is-pet'),
-            children: [rt.h('div', { className: 'pet-chat-bubble', children: [rt.h('div', { className: 'pet-chat-text', children: message.text })] })],
+            children: [
+              rt.h('div', {
+                className: 'pet-chat-bubble',
+                children: [rt.h('div', { className: 'pet-chat-text', children: message.text })],
+              }),
+            ],
           }),
         );
   return rt.h('div', { className: 'pet-chat-list pet-chat-session-list', children: body });
@@ -154,7 +159,8 @@ export function buildPanel(rt: ChatPanelRuntime, state: ChatPanelState): unknown
   const { h } = rt;
   // 绑定开启时整个面板进入会话模式：只保留会话选择条 + 会话消息窗 + 错误行 + 输入区，
   // 宠物标签 / 工具栏 / 孤儿提示都是直聊模式的部件，切回来会原样回来（状态没清）
-  const sessionMode = state.sessionBinding !== null && state.sessionBinding.enabled && state.sessionBinding.sessionId !== '';
+  const sessionMode =
+    state.sessionBinding !== null && state.sessionBinding.enabled && state.sessionBinding.sessionId !== '';
   return h('div', {
     className: 'pet-chat',
     // Esc 收起卷帘：焦点在按钮上还是在输入框里都收得到（事件冒泡到根节点）
